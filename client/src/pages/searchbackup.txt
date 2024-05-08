@@ -1,0 +1,166 @@
+import React, { useState } from "react";
+import { useDoctor } from "../context/DoctorContext";
+import DoctorArea from "../data/DoctorArea";
+import Location from "../data/Location";
+
+const SearchResult = () => {
+  const { doctors, generateTimeSlots } = useDoctor();
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDay, setSelectedDay] = useState(null);
+  const [selectedArea, setSelectedArea] = useState("");
+  const [selectedDivision, setSelectedDivision] = useState("");
+  const [selectedDistrict, setSelectedDistrict] = useState("");
+
+  // Function to handle date picker change
+  const handleDateChange = (event) => {
+    setSelectedDate(event.target.value);
+    // Reset selected day when a new date is picked
+    setSelectedDay(null);
+  };
+
+  // Function to handle button click
+  const handleButtonClick = () => {
+    if (selectedDate) {
+      const day = new Date(selectedDate).toLocaleDateString("en-US", {
+        weekday: "long",
+      });
+      setSelectedDay(day);
+    } else {
+      alert("Please select a date.");
+    }
+  };
+
+  // Filter doctors based on selected day, area, division, and district
+  const filteredDoctors = doctors.filter((doctor) => {
+    const matchesDate = selectedDay
+      ? doctor.availability.some((slot) => slot.day === selectedDay)
+      : true;
+    const matchesArea = selectedArea ? doctor.area === selectedArea : true;
+    const matchesDivision = selectedDivision
+      ? doctor.selectedDivision === selectedDivision
+      : true;
+    const matchesDistrict = selectedDistrict
+      ? doctor.selectedDistrict === selectedDistrict
+      : true;
+    return matchesDate && matchesArea && matchesDivision && matchesDistrict;
+  });
+
+  return (
+    <div>
+      <div>
+        {/* Input field with date picker */}
+        <input
+          type="date"
+          value={selectedDate}
+          onChange={handleDateChange}
+          className="form-control"
+        />
+        {/* Select field for area */}
+        <select
+          value={selectedArea}
+          onChange={(e) => setSelectedArea(e.target.value)}
+        >
+          <option value="">Select Area</option>
+
+          {DoctorArea.map((docarea, index) => (
+            <option key={index} value={docarea}>
+              {docarea}
+            </option>
+          ))}
+        </select>
+        {/* Select field for division */}
+        <select
+          value={selectedDivision}
+          onChange={(e) => setSelectedDivision(e.target.value)}
+        >
+          <option value="">Select Division</option>
+          {Location.map((location, index) => (
+            <option key={index} value={location.division}>
+              {location.division}
+            </option>
+          ))}
+        </select>
+        <select
+          value={selectedDistrict}
+          onChange={(e) => setSelectedDistrict(e.target.value)}
+        >
+          <option value="">Select District</option>
+          {Location.find(
+            (location) => location.division === selectedDivision
+          )?.districts.map((district, index) => (
+            <option key={index} value={district}>
+              {district}
+            </option>
+          ))}
+        </select>
+        {/* Button to display selected date */}
+        <button type="button" onClick={handleButtonClick} className="btn">
+          Find Doctor
+        </button>
+        {/* Display selected date and day */}
+        {selectedDay && <p>{selectedDay}</p>}
+      </div>
+      <div>
+        {/* Show filtered doctors */}
+        {filteredDoctors.map((doctor) => (
+          <div key={doctor._id}>
+            <h2>{doctor.name}</h2>
+            <p>Specialization: {doctor.area}</p>
+            <p>Degree: {doctor.degree}</p>
+            <p>Visit: {doctor.visit}</p>
+            <p>Division: {doctor.selectedDivision}</p>
+            <p>District: {doctor.selectedDistrict}</p>
+            <button
+              className="btn"
+              onClick={() => document.getElementById("my_modal_3").showModal()}
+            >
+              Book an Appointment
+            </button>
+            <dialog id="my_modal_3" className="modal">
+              <div className="modal-box">
+                <form method="dialog">
+                  {/* if there is a button in form, it will close the modal */}
+                  <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+                    ✕
+                  </button>
+                </form>
+                <ul>
+                  <form>
+                    <p>Selected Date: {selectedDate}</p>
+                    {doctor.availability.map((slot, index) => (
+                      <li key={index}>
+                        {slot.day}: {slot.startTime} - {slot.endTime}
+                        <h1>All Slots:</h1>
+                        {generateTimeSlots(
+                          new Date(`01/01/2000 ${slot.startTime}`),
+                          new Date(`01/01/2000 ${slot.endTime}`)
+                        ).map((timeSlot, idx) => (
+                          <button
+                            type="button"
+                            key={idx}
+                            className="btn bg-neutral-content"
+                          >
+                            {timeSlot.startTime} - {timeSlot.endTime}
+                          </button>
+                        ))}
+                      </li>
+                    ))}
+
+                    <button className="btn btn-primary">Confirm</button>
+                  </form>
+                </ul>
+              </div>
+            </dialog>
+            <img
+              src={doctor.imageUrl}
+              alt=""
+              className="w-32 h-32 object-cover rounded-full"
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default SearchResult;
