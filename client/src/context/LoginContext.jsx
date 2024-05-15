@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
+
 const LoginContext = createContext();
 
 export const useLogin = () => useContext(LoginContext);
@@ -14,37 +15,44 @@ export const LoginProvider = ({ children }) => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      try {
-        const response = await axios.get("http://localhost:3001/me", {
-          withCredentials: true,
-        });
-        setUser(response.data.user);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching user:", error);
-        setError(
-          error.response ? error.response.data.message : "An error occurred"
-        );
-        setLoading(false);
+      if (isLoggedIn) {
+        setLoading(true);
+        try {
+          const response = await axios.get("http://localhost:3001/me", {
+            withCredentials: true,
+          });
+          setUser(response.data.user);
+          setError(null); // Clear previous errors
+        } catch (error) {
+          console.error("Error fetching user:", error);
+          setError(
+            error.response ? error.response.data.message : "An error occurred"
+          );
+        } finally {
+          setLoading(false);
+        }
       }
     };
 
     fetchUser();
-  }, []);
+  }, [isLoggedIn]);
 
   useEffect(() => {
-    const fetchedToken = document.cookie;
+    const checkToken = () => {
+      const fetchedToken = document.cookie.includes("token");
 
-    if (fetchedToken) {
-      // Token found, set isLoggedIn to true
-      localStorage.setItem("isLoggedIn", true);
-      setIsLoggedIn(true);
-    } else {
-      // Token not found or invalid, set isLoggedIn to false
-      localStorage.setItem("isLoggedIn", false);
-      setIsLoggedIn(false);
-    }
-  }, [isLoggedIn]);
+      if (fetchedToken) {
+        localStorage.setItem("isLoggedIn", "true");
+        setIsLoggedIn(true);
+      } else {
+        localStorage.setItem("isLoggedIn", "false");
+        setIsLoggedIn(false);
+        setUser(null); // Clear user data when not logged in
+      }
+    };
+
+    checkToken();
+  }, []);
 
   return (
     <LoginContext.Provider

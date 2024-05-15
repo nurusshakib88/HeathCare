@@ -1,48 +1,38 @@
 import { useDoctor } from "../context/DoctorContext";
-
+import { Delete } from "@mui/icons-material";
 const AllDoctors = () => {
   const { doctors, handleDelete, generateTimeSlots } = useDoctor();
 
   return (
-    <div>
-      All Doctors
+    <div className="w-full py-10">
+      <h1 className="text-2xl font-bold text-center mb-10">All Doctors</h1>
       {doctors.map((doctor) => (
-        <div key={doctor._id}>
-          <h2>{doctor.name}</h2>
-          <p>Specialization: {doctor.area}</p>
-          <p>Degree: {doctor.degree}</p>
-          <p>Visit: {doctor.visit}</p>
-          <p>Division: {doctor.selectedDivision}</p>
-          <p>District: {doctor.selectedDistrict}</p>
-          <p>Availability:</p>
-          <ul>
-            {doctor.availability.map((slot, index) => (
-              <li key={index}>
-                {slot.day}: {slot.startTime} - {slot.endTime}
-                <ul>
-                  {generateTimeSlots(
-                    new Date(`01/01/2000 ${slot.startTime}`),
-                    new Date(`01/01/2000 ${slot.endTime}`)
-                  ).map((timeSlot, idx) => (
-                    <li key={idx}>
-                      {timeSlot.startTime} - {timeSlot.endTime}
-                    </li>
-                  ))}
-                </ul>
-              </li>
-            ))}
-          </ul>
+        <div
+          key={doctor._id}
+          className="flex items-center gap-5 p-3 rounded-xl mb-5 shadow-lg"
+        >
           <img
             src={doctor.imageUrl}
             alt=""
-            className="w-32 h-32 object-cover rounded-full"
+            className="w-32 aspect-square rounded-xl object-cover"
           />
+          <div>
+            {" "}
+            <h2>{doctor.name}</h2>
+            <p>
+              Specialization: {doctor.area} - {doctor.degree}
+            </p>
+            <p>Visit: {doctor.visit}</p>
+            <p>
+              Location: {doctor.selectedDistrict},{doctor.selectedDivision}
+            </p>
+          </div>
           <button
             type="button"
             onClick={(e) => handleDelete(doctor._id)}
-            className="btn btn-danger btn-circle ms-auto"
+            className="btn btn-error btn-circle ms-auto text-secondary"
           >
-            delete
+            <Delete />
           </button>
         </div>
       ))}

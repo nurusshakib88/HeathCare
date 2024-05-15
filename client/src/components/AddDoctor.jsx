@@ -98,94 +98,106 @@ const AddDoctor = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={Submit}>
-        <input
-          type="text"
-          placeholder="Doctor Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-
-        <div>
-          <label htmlFor="area">Select Area:</label>
-          <select
-            id="area"
-            value={area}
-            onChange={(e) => setArea(e.target.value)}
-          >
-            <option value="">Select Area</option>
-            {DoctorArea.map((docarea, index) => (
-              <option key={index} value={docarea}>
-                {docarea}
-              </option>
-            ))}
-          </select>
+    <div className="w-full py-10">
+      <h1 className="text-2xl font-bold text-center mb-10">Add Doctor</h1>
+      <form onSubmit={Submit} className="flex flex-col gap-3 w-full">
+        <div className="grid grid-cols-2 gap-3">
+          <input
+            type="text"
+            placeholder="Doctor Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="input input-bordered"
+          />{" "}
+          <input
+            type="text"
+            placeholder="Doctor degree"
+            value={degree}
+            onChange={(e) => setDegree(e.target.value)}
+            className="input input-bordered"
+          />
+        </div>
+        <div className="grid grid-cols-2 gap-3">
+          <div className="flex items-center gap-3">
+            <label htmlFor="area" className="w-full">
+              Select Area:
+            </label>
+            <select
+              id="area"
+              value={area}
+              onChange={(e) => setArea(e.target.value)}
+              className="input input-bordered"
+            >
+              <option value="">Select Area</option>
+              {DoctorArea.map((docarea, index) => (
+                <option key={index} value={docarea}>
+                  {docarea}
+                </option>
+              ))}
+            </select>
+          </div>
+          <input
+            type="text"
+            placeholder="Doctor visit"
+            value={visit}
+            onChange={(e) => setVisit(e.target.value)}
+            className="input input-bordered"
+          />
         </div>
 
-        <input
-          type="text"
-          placeholder="Doctor visit"
-          value={visit}
-          onChange={(e) => setVisit(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Doctor degree"
-          value={degree}
-          onChange={(e) => setDegree(e.target.value)}
-        />
-        <div>
-          <label htmlFor="division">Select Division:</label>
-          <select
-            id="division"
-            value={selectedDivision}
-            onChange={handleDivisionChange}
-          >
-            <option value="">Select Division</option>
-            {Location.map((location, index) => (
-              <option key={index} value={location.division}>
-                {location.division}
-              </option>
-            ))}
-          </select>
+        <div className="flex items-center gap-3">
+          <div className="flex gap-3 items-center w-full">
+            <label htmlFor="division" className="w-full">
+              Select Division:
+            </label>
+            <select
+              id="division"
+              value={selectedDivision}
+              onChange={handleDivisionChange}
+              className="input input-bordered w-full"
+            >
+              <option value="">Select Division</option>
+              {Location.map((location, index) => (
+                <option key={index} value={location.division}>
+                  {location.division}
+                </option>
+              ))}
+            </select>
+          </div>
 
-          <label htmlFor="district">Select District:</label>
-          <select
-            id="district"
-            value={selectedDistrict}
-            onChange={handleDistrictChange}
-            disabled={!selectedDivision}
-          >
-            <option value="">Select District</option>
-            {Location.find(
-              (location) => location.division === selectedDivision
-            )?.districts.map((district, index) => (
-              <option key={index} value={district}>
-                {district}
-              </option>
-            ))}
-          </select>
+          <div className="flex gap-3 items-center w-full">
+            {" "}
+            <label htmlFor="district" className="w-full">
+              Select District:
+            </label>
+            <select
+              id="district"
+              value={selectedDistrict}
+              onChange={handleDistrictChange}
+              disabled={!selectedDivision}
+              className="input input-bordered w-full"
+            >
+              <option value="">Select District</option>
+              {Location.find(
+                (location) => location.division === selectedDivision
+              )?.districts.map((district, index) => (
+                <option key={index} value={district}>
+                  {district}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
-
         {/* Add inputs for doctor availability */}
         {availability.map((slot, index) => (
-          <div key={index}>
-            {/* <input
-              type="text"
-              placeholder="Day (e.g., Monday)"
-              value={slot.day}
-              onChange={(e) =>
-                handleAvailabilityChange(index, "day", e.target.value)
-              }
-            /> */}
-
+          <div key={index} className="grid grid-cols-4 gap-3">
             <select
               id="availability"
               value={slot.day}
               onChange={(e) =>
                 handleAvailabilityChange(index, "day", e.target.value)
               }
+              className="input input-bordered"
             >
               <option value="">Select Day</option>
               {WeekDays.map((weekday, index) => (
@@ -195,14 +207,13 @@ const AddDoctor = () => {
               ))}
             </select>
 
-  
-
             <select
               id="starttime"
               value={slot.startTime}
               onChange={(e) =>
                 handleAvailabilityChange(index, "startTime", e.target.value)
               }
+              className="input input-bordered"
             >
               <option value="">Start Time</option>
               {Times.map((time, index) => (
@@ -218,6 +229,7 @@ const AddDoctor = () => {
               onChange={(e) =>
                 handleAvailabilityChange(index, "endTime", e.target.value)
               }
+              className="input input-bordered"
             >
               <option value="">End Time</option>
               {Times.map((time, index) => (
@@ -227,22 +239,28 @@ const AddDoctor = () => {
               ))}
             </select>
 
-            <button type="button" onClick={() => removeAvailabilitySlot(index)}>
+            <button
+              type="button"
+              onClick={() => removeAvailabilitySlot(index)}
+              className="btn text-secondary btn-error"
+            >
               Remove
             </button>
           </div>
         ))}
-        <button type="button" onClick={addAvailabilitySlot}>
+        <button
+          type="button"
+          onClick={addAvailabilitySlot}
+          className="btn btn-success text-secondary"
+        >
           Add Availability Slot
         </button>
-
         {/* availability */}
-
         {/* image  */}
         <label htmlFor="file-upload" className="cursor-pointer inline-block ">
           {image ? (
             <img
-              className=" w-72 lg:w-96  rounded-xl"
+              className=" w-20 rounded-full"
               src={image ? URL.createObjectURL(image) : ""}
               alt="img"
             />
@@ -256,14 +274,13 @@ const AddDoctor = () => {
           type="file"
           onChange={handleImageChange}
         />
-        <p>{imageUrl}</p>
         {loading ? (
           <button type="button" className="btn btn-primary" disabled>
             Uploading image ...
           </button>
         ) : (
           <button
-            className="btn btn-primary"
+            className="btn btn-primary text-secondary"
             disabled={!imageUrl || signupLoading}
           >
             {signupLoading ? "Uploading..." : "Upload"}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Delete } from "@mui/icons-material";
 
 const Allusers = () => {
   const [users, setUsers] = useState([]);
@@ -45,17 +46,16 @@ const Allusers = () => {
   }
 
   return (
-    <div>
-      <h1>All Users</h1>
-      <table>
-        <thead>
+    <div className="w-full py-10">
+      <h1 className="text-2xl font-bold text-center mb-10">All Users</h1>
+      <table className="w-full text-center table-lg">
+        <thead className="bg-primary text-secondary">
           <tr>
             <th>Name</th>
             <th>Email</th>
             <th>Phone</th>
             <th>Age</th>
-            <th>Role</th>
-            <th>Button</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -68,14 +68,13 @@ const Allusers = () => {
                     <td>{user.email}</td>
                     <td>{user.phone}</td>
                     <td>{user.age}</td>
-                    <td>{user.role}</td>
                     <td>
                       <button
                         type="button"
                         onClick={(e) => handleDelete(user._id)}
-                        className="btn btn-danger btn-circle ms-auto"
+                        className="btn btn-error btn-circle ms-auto text-secondary"
                       >
-                        delete
+                        <Delete />
                       </button>
                     </td>
                   </tr>
