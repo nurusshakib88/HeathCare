@@ -5,9 +5,6 @@ const cookieParser = require("cookie-parser");
 const UserRoutes = require("./routes/UserRoutes");
 const DoctorRoutes = require("./routes/DoctorRoutes");
 const AppointmentRoutes = require("./routes/AppointmentRoutes");
-const BloodInventoryRoutes = require("./routes/BloodInventoryRoutes");
-const BloodRequestRoutes = require("./routes/BloodRequestRoutes");
-const DonorRoutes = require("./routes/DonorRoutes");
 require("dotenv").config();
 
 const app = express();
@@ -34,8 +31,6 @@ app.use("/appointments", AppointmentRoutes);
 app.use("/blood-inventory", BloodInventoryRoutes);
 app.use("/blood-requests", BloodRequestRoutes);
 app.use("/donors", DonorRoutes);
-
-
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

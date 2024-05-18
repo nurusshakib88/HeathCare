@@ -31,7 +31,7 @@ mongoose.connect(MONGO_URI);
 app.use("/", UserRoutes);
 app.use("/doctors", DoctorRoutes);
 app.use("/appointments", AppointmentRoutes);
-app.use("/blood-inventory", BloodInventoryRoutes);
+app.use("/blood-inventory/add", BloodInventoryRoutes);
 app.use("/blood-requests", BloodRequestRoutes);
 app.use("/donors", DonorRoutes);
 
