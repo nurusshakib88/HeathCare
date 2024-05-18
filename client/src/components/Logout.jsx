@@ -1,7 +1,10 @@
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useLogin } from "../context/LoginContext";
 
-const Logout = () => {
+const Logout = ({ className, icon }) => {
+  const { setIsLoggedIn } = useLogin();
+
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -9,6 +12,7 @@ const Logout = () => {
       .get("http://localhost:3001/logout", { withCredentials: true })
       .then((response) => {
         console.log(response.data);
+        setIsLoggedIn(false);
         navigate("/login");
       })
       .catch((error) => {
@@ -17,9 +21,9 @@ const Logout = () => {
   };
 
   return (
-    <button className="btn" onClick={handleLogout}>
-      Logout
-    </button>
+    <Link className={className} onClick={handleLogout}>
+      {icon}Logout
+    </Link>
   );
 };
 

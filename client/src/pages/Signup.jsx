@@ -84,105 +84,135 @@ const Signup = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col">
-      <input
-        type="text"
-        placeholder="Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="Phone Number"
-        value={phone}
-        onChange={(e) => setPhone(e.target.value)}
-      />
-      <input
-        type="date"
-        placeholder="Date of Birth"
-        value={age}
-        onChange={(e) => setAge(e.target.value)}
-      />
-      <div>
-        <label htmlFor="division">Select Division:</label>
-        <select
-          id="division"
-          value={selectedDivision}
-          onChange={handleDivisionChange}
-        >
-          <option value="">Select Division</option>
-          {Location.map((location, index) => (
-            <option key={index} value={location.division}>
-              {location.division}
-            </option>
-          ))}
-        </select>
-
-        <label htmlFor="district">Select District:</label>
-        <select
-          id="district"
-          value={selectedDistrict}
-          onChange={handleDistrictChange}
-          disabled={!selectedDivision}
-        >
-          <option value="">Select District</option>
-          {Location.find(
-            (location) => location.division === selectedDivision
-          )?.districts.map((district, index) => (
-            <option key={index} value={district}>
-              {district}
-            </option>
-          ))}
-        </select>
-      </div>
-      <label htmlFor="file-upload" className="cursor-pointer inline-block ">
-        {image ? (
-          <img
-            className=" w-72 lg:w-96  rounded-xl"
-            src={image ? URL.createObjectURL(image) : ""}
-            alt="img"
+    <div className="px-32 py-10 flex items-center justify-center text-center">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col px-5 py-8 w-[60%] rounded-xl gap-3"
+        style={{ boxShadow: "0 1px 10px rgb(0,0,0,.3)" }}
+      >
+        <h1 className="font-bold mb-5 text-xl">Register</h1>
+        <input
+          type="text"
+          placeholder="Full Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className="input input-bordered"
+        />
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="input input-bordered"
+        />
+        <div className="grid grid-cols-2 gap-3">
+          <input
+            type="text"
+            placeholder="Phone Number"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            className="input input-bordered"
           />
+          <input
+            type="date"
+            placeholder="Date of Birth"
+            value={age}
+            onChange={(e) => setAge(e.target.value)}
+            className="input input-bordered"
+          />
+        </div>
+        <div className="grid grid-cols-2 items-center gap-3">
+          <div className="flex items-center gap-3">
+            <label htmlFor="division" className="w-full">
+              Select Division:
+            </label>
+            <select
+              id="division"
+              value={selectedDivision}
+              onChange={handleDivisionChange}
+              className="input w-full input-bordered"
+            >
+              <option value="">Select Division</option>
+              {Location.map((location, index) => (
+                <option key={index} value={location.division}>
+                  {location.division}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <label htmlFor="district" className="w-full">
+              Select District:
+            </label>
+            <select
+              id="district"
+              value={selectedDistrict}
+              onChange={handleDistrictChange}
+              disabled={!selectedDivision}
+              className="input w-full  input-bordered"
+            >
+              <option value="">Select District</option>
+              {Location.find(
+                (location) => location.division === selectedDivision
+              )?.districts.map((district, index) => (
+                <option key={index} value={district}>
+                  {district}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="input input-bordered"
+        />
+        <label htmlFor="file-upload" className="cursor-pointer inline-block ">
+          {image ? (
+            <img
+              className=" w-16 aspect-square rounded-full"
+              src={image ? URL.createObjectURL(image) : ""}
+              alt="img"
+            />
+          ) : (
+            "Select Profile Picture"
+          )}
+        </label>
+        <input
+          id="file-upload"
+          className="hidden text-white"
+          type="file"
+          onChange={handleImageChange}
+        />
+        {loading ? (
+          <button
+            type="button"
+            disabled
+            className="btn btn-primary text-secondary"
+          >
+            Uploading image ...
+          </button>
         ) : (
-          "upload"
+          <button
+            type="submit"
+            disabled={!imageUrl || signupLoading}
+            className="btn btn-primary text-secondary"
+          >
+            {signupLoading ? "Signing up..." : "Sign Up"}
+          </button>
         )}
-      </label>
-      <input
-        id="file-upload"
-        className="hidden text-white"
-        type="file"
-        onChange={handleImageChange}
-      />
-      <p>{imageUrl}</p>
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      {loading ? (
-        <button type="button" className="btn btn-primary" disabled>
-          Uploading image ...
-        </button>
-      ) : (
-        <button
-          type="submit"
-          className="btn btn-primary"
-          disabled={!imageUrl || signupLoading}
-        >
-          {signupLoading ? "Signing up..." : "Sign Up"}
-        </button>
-      )}
-      <Link to="/login" className="btn">
-        Login
-      </Link>{" "}
-      Instead
-    </form>
+        <p>
+          Already have an account?{" "}
+          <Link to="/login" className="underline text-primary">
+            Login
+          </Link>{" "}
+          Instead
+        </p>
+      </form>
+    </div>
   );
 };
 
