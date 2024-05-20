@@ -45,31 +45,13 @@ exports.addComment = async (req, res) => {
 };
 
 // New method to get notifications for a user
-// exports.getNotifications = async (req, res) => {
-//     try {
-//         const { userId } = req.params;
-//         const requests = await BloodRequest.find({ 'notifications.userId': userId }).populate('notifications.userId', 'name');
-//         const notifications = requests.flatMap(request => request.notifications.filter(notification => notification.userId.toString() === userId));
-//         res.status(200).json(notifications);
-//     } catch (error) {
-//         res.status(500).json({ message: error.message });
-//     }
-// };
 exports.getNotifications = async (req, res) => {
     try {
         const { userId } = req.params;
-
-        // Find all blood requests where the user is the recipient of notifications
-        const bloodRequests = await BloodRequest.find({ 'notifications.userId': userId })
-            .populate('notifications.userId', 'name')
-            .select('notifications');
-
-        // Flatten and filter notifications
-        const notifications = bloodRequests.flatMap(request => request.notifications.filter(notification => notification.userId.toString() === userId));
-
+        const requests = await BloodRequest.find({ 'notifications.userId': userId }).populate('notifications.userId', 'name');
+        const notifications = requests.flatMap(request => request.notifications.filter(notification => notification.userId.toString() === userId));
         res.status(200).json(notifications);
     } catch (error) {
-        console.error(`Error retrieving notifications: ${error.message}`);
         res.status(500).json({ message: error.message });
     }
 };

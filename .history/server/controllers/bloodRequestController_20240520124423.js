@@ -25,18 +25,15 @@ exports.addComment = async (req, res) => {
     try {
         const { requestId, userId, comment } = req.body;
         const request = await BloodRequest.findById(requestId);
-        if (!request) {
-            return res.status(404).json({ message: 'Blood request not found' });
-        }
         request.comments.push({ userId, comment });
-
+        
         // Add notification for the owner of the blood request
         const user = await UserModel.findById(request.userId);
         request.notifications.push({
             userId: request.userId,
             message: `You have a new comment on your blood request from ${user.name}`
         });
-
+        
         await request.save();
         res.status(200).json(request);
     } catch (error) {
@@ -45,39 +42,12 @@ exports.addComment = async (req, res) => {
 };
 
 // New method to get notifications for a user
-// exports.getNotifications = async (req, res) => {
-//     try {
-//         const { userId } = req.params;
-//         const requests = await BloodRequest.find({ 'notifications.userId': userId }).populate('notifications.userId', 'name');
-//         const notifications = requests.flatMap(request => request.notifications.filter(notification => notification.userId.toString() === userId));
-//         res.status(200).json(notifications);
-//     } catch (error) {
-//         res.status(500).json({ message: error.message });
-//     }
-// };
 exports.getNotifications = async (req, res) => {
     try {
         const { userId } = req.params;
-
-        // Find all blood requests where the user is the recipient of notifications
-        const bloodRequests = await BloodRequest.find({ 'notifications.userId': userId })
-            .populate('notifications.userId', 'name')
-            .select('notifications');
-
-        // Flatten and filter notifications
-        const notifications = bloodRequests.flatMap(request => request.notifications.filter(notification => notification.userId.toString() === userId));
-
-        res.status(200).json(notifications);
-    } catch (error) {
-        console.error(`Error retrieving notifications: ${error.message}`);
-        res.status(500).json({ message: error.message });
-    }
-};
-
-exports.getAllBloodRequests = async (req, res) => {
-    try {
-        const bloodRequests = await BloodRequest.find().populate('userId', 'name');
-        res.status(200).json(bloodRequests);
+        const requests = await BloodRequest.find({ 'notifications.userId': userId }, 'notifications').populate('notifications.userId', 'name');
+        const notifications = requests.map(request => request.notifications.filter(notification => notification.userId.toString() === userId));
+        res.status(200).json(notifications.flat());
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

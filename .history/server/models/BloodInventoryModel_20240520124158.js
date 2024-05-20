@@ -11,7 +11,7 @@ const BloodInventorySchema = new mongoose.Schema({
     },
     country: {
         type: String,
-        required: false
+        required: true
     },
     division: {
         type: String,

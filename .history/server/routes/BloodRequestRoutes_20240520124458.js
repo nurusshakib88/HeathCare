@@ -9,9 +9,6 @@ router.post('/comment', bloodRequestController.addComment);
 // New route to get notifications for a user
 router.get('/notifications/:userId', bloodRequestController.getNotifications);
 
-// New route to get all blood requests
-router.get('/all', bloodRequestController.getAllBloodRequests);
-
 // Add more routes as needed (update, delete)
 
 module.exports = router;

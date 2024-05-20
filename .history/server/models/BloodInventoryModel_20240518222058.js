@@ -11,14 +11,6 @@ const BloodInventorySchema = new mongoose.Schema({
     },
     country: {
         type: String,
-        required: false
-    },
-    division: {
-        type: String,
-        required: true
-    },
-    district: {
-        type: String,
         required: true
     },
     city: {
