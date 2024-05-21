@@ -24,7 +24,7 @@ export const LoginProvider = ({ children }) => {
           setUser(response.data.user);
           setError(null); // Clear previous errors
         } catch (error) {
-          console.error("Error fetching user:", error);
+          console.error("Error fetching user:", error); 
           setError(
             error.response ? error.response.data.message : "An error occurred"
           );

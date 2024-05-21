@@ -20,4 +20,24 @@ exports.getDonors = async (req, res) => {
     }
 };
 
-// Add more methods as needed (update, delete)
+exports.updateDonor = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const updatedDonor = await Donor.findByIdAndUpdate(id, req.body, { new: true });
+        if (!updatedDonor) return res.status(404).json({ message: 'Donor not found' });
+        res.status(200).json(updatedDonor);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+exports.deleteDonor = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const deletedDonor = await Donor.findByIdAndDelete(id);
+        if (!deletedDonor) return res.status(404).json({ message: 'Donor not found' });
+        res.status(200).json({ message: 'Donor deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};

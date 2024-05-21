@@ -4,7 +4,7 @@ const donorController = require('../controllers/donorController');
 
 router.post('/add', donorController.addDonor);
 router.get('/', donorController.getDonors);
-
-// Add more routes as needed (update, delete)
+router.put('/:id', donorController.updateDonor);
+router.delete('/:id', donorController.deleteDonor);
 
 module.exports = router;

@@ -16,6 +16,18 @@ const DonorSchema = new mongoose.Schema({
     contactInfo: {
         type: String,
         required: true
+    },
+    division: {
+        type: String,
+        required: true
+    },
+    district: {
+        type: String,
+        required: true
+    },
+    city: {
+        type: String,
+        required: true
     }
 });
 
