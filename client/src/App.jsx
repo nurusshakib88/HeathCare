@@ -12,6 +12,10 @@ import MakeAnAppointment from "./pages/MakeAnAppointment";
 import AppointmentList from "./components/ApploinmentList";
 import Error from "./pages/Error";
 import Footer from "./components/Footer";
+import BloodBank from "./pages/BloodBank";
+import BloodInventory from "./pages/BloodInventory";
+import BloodDonorList from "./pages/BloodDonorList";
+import BloodRequest from "./pages/BloodRequest";
 
 const App = () => {
   const { isLoggedIn } = useLogin();
@@ -30,6 +34,14 @@ const App = () => {
         </Route>
         <Route path="/register" element={<Signup />} />
         <Route path="*" element={<Error />} />
+        <Route path="/Blood" element={<BloodInventory/>} />
+
+        <Route path="/blood-bank" element={<BloodBank />}>
+            <Route path="inventory" element={<BloodInventory />} />
+            <Route path="donors" element={<BloodDonorList />} />
+            <Route path="requests" element={<BloodRequest />} />
+          </Route>
+          
       </Routes>
       <Footer />
     </BrowserRouter>

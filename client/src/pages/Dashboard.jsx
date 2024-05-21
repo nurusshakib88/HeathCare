@@ -4,6 +4,7 @@ import axios from "axios";
 import AddDoctor from "../components/AddDoctor";
 import AllDoctors from "../components/AllDoctors";
 import Allusers from "../components/Allusers";
+import BloodInventory from "./BloodInventory";
 
 const Dashboard = () => {
   const [success, setSuccess] = useState();
@@ -48,6 +49,7 @@ const Dashboard = () => {
         return (
           <div className="h-[90vh] flex items-center justify-center text-6xl px-10 text-center font-bold capitalize">
             Welcome to admin dashboard
+            
           </div>
         );
     }
