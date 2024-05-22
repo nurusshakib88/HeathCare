@@ -65,7 +65,27 @@ const BloodInventory = () => {
 
     return (
         <div>
-            <h1 className="text-2xl font-bold mb-4">Blood Inventory</h1>
+            <h1 className="text-2xl font-bold mb-4 ">Blood Inventory</h1>
+<div className='grid lg:grid-cols-3 lg:gap-3 md:grid-cols-2 md:gap-1 sm:grid-cols-1 sm:gap-2'>
+            {inventory.length > 0 ? (
+                    inventory.map(item => (
+          <>  <div key={item._id}  className=" mb-2 card w-96 bg-base-100 shadow-xl">
+  <div className="card-body items-center text-center">
+    <strong>Blood Group:</strong> {item.bloodGroup}, 
+                            <strong> Quantity:</strong> {item.quantity}, 
+                            <strong> Location:</strong> {item.city}, {item.district}, {item.division}, {item.country}
+                            <button onClick={() => handleEditClick(item)} className="ml-2 px-2 py-1 bg-blue-500 text-white rounded">Edit</button>
+                            <button onClick={() => handleDeleteClick(item._id)} className="ml-2 px-2 py-1 bg-red-500 text-white rounded">Delete</button>
+                        
+  </div>
+</div> </> ))
+                ) : (
+                    <p>No blood inventory available</p>
+                )}
+
+</div>
+
+
             <ul className="list-disc pl-5">
                 {inventory.length > 0 ? (
                     inventory.map(item => (
