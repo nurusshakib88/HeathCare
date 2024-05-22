@@ -127,11 +127,12 @@ const BloodDonorList = () => {
               <TableCell>Address</TableCell>
               <TableCell>Blood Group</TableCell>
               <TableCell>Contact Info</TableCell>
-              
-              {user?.role === 'admin' && (
-                                        <>
-              <TableCell>Actions</TableCell>
-              </>)}
+
+              {user?.role === "admin" && (
+                <>
+                  <TableCell>Actions</TableCell>
+                </>
+              )}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -143,28 +144,25 @@ const BloodDonorList = () => {
                   <TableCell>{donor.bloodGroup}</TableCell>
                   <TableCell>{donor.contactInfo}</TableCell>
                   <TableCell>
-                    
-              {user?.role === 'admin' && (
-                             <>           
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={() => handleEditClick(donor)}
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      onClick={() => handleDeleteClick(donor._id)}
-                      className="ml-2"
-                    >
-                      Delete
-                    </Button>
-
-            
-
-</>)}
+                    {user?.role === "admin" && (
+                      <>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={() => handleEditClick(donor)}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          onClick={() => handleDeleteClick(donor._id)}
+                          className="ml-2"
+                        >
+                          Delete
+                        </Button>
+                      </>
+                    )}
                   </TableCell>
                 </TableRow>
               ))
@@ -177,9 +175,12 @@ const BloodDonorList = () => {
         </Table>
       </TableContainer>
       <div>
-      <Button variant="contained" color="primary" onClick={() => setAddingDonor(true)} className="my-4">
-        Become a Donor
-      </Button>
+        <button
+          onClick={() => setAddingDonor(true)}
+          className="my-4 btn btn-primary"
+        >
+          Become a Donor
+        </button>
       </div>
 
       {addingDonor && (
@@ -187,17 +188,17 @@ const BloodDonorList = () => {
           <div className="inmodal-box">
             <h2 className="text-xl font-bold">Became A Donor</h2>
             <form onSubmit={handleAddDonorSubmit}>
-            <div className="mb-2">
-              <label className="block">Name</label>
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                className="input input-bordered w-full"
-              />
-            </div>
-             
+              <div className="mb-2">
+                <label className="block">Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  className="input input-bordered w-full"
+                />
+              </div>
+
               <div className="mb-2">
                 <label className="block">Address</label>
                 <input
@@ -229,18 +230,18 @@ const BloodDonorList = () => {
                 />
               </div>
 
-              
               <button
-                type="submit"  
-                className="mt-2 px-4 py-2 bg-blue-500 text-white rounded"
+                type="submit"
+                className="mt-2 px-4 py-2 btn btn-primary text-white rounded"
               >
                 Add Donor
               </button>
               <button
                 onClick={() => setAddingDonor(false)}
                 className="ml-2 px-4 py-2 bg-gray-500 text-white rounded"
-              ></button>
-              
+              >
+                Cancel
+              </button>
             </form>
           </div>
         </div>
@@ -308,8 +309,6 @@ const BloodDonorList = () => {
           </div>
         </div>
       )}
-
-
     </div>
   );
 };
