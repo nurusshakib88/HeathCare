@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Grid, Button, TextField, Card, CardContent, Typography, Modal, Backdrop, Fade } from '@mui/material';
+import { Grid, Button, TextField, Card, CardContent, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useLogin } from '../context/LoginContext';
@@ -20,7 +20,7 @@ const BloodInventory = () => {
         division: ''
     });
     const [filter, setFilter] = useState('');
-    const [openModal, setOpenModal] = useState(false);
+    // const [openModal, setOpenModal] = useState(false);
 
     useEffect(() => {
         const fetchInventory = async () => {
@@ -42,7 +42,7 @@ const BloodInventory = () => {
 
     const handleEditClick = (item) => {
         setEditingItem(item);
-        setOpenModal(true);
+        // setOpenModal(true);
         setFormData({
             bloodGroup: item.bloodGroup,
             quantity: item.quantity,
@@ -80,7 +80,7 @@ const BloodInventory = () => {
             setInventory(updatedInventory);
             setFilteredInventory(updatedInventory);
             setEditingItem(null);
-            setOpenModal(false);
+            // setOpenModal(false);
         } catch (error) {
             console.error('Error updating inventory:', error);
         }
