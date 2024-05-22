@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import {useNavigate } from 'react-router-dom';
 import BloodInventory from './BloodInventory';
 import BloodDonorList from './BloodDonorList';
@@ -48,7 +48,7 @@ const BloodBank = () => {
                 onClick={() => handleNavigation("BloodInventory")}
                 className="btn w-full"
               >
-                Add Doctor
+                BloodInventory
               </button>
             </li>
             <li>
@@ -56,7 +56,7 @@ const BloodBank = () => {
                 onClick={() => handleNavigation("BloodDonorList")}
                 className="btn w-full"
               >
-                All Doctors
+                BloodDonorList
               </button>
             </li>
             <li>
@@ -64,7 +64,7 @@ const BloodBank = () => {
                 onClick={() => handleNavigation("BloodRequest")}
                 className="btn w-full"
               >
-                All Users
+                BloodRequest
               </button>
             </li>
           </ul>
