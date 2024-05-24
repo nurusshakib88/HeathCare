@@ -8,6 +8,7 @@ const AppointmentSchema = new mongoose.Schema({
   doctorName: String,
   userName: String,
   userId: String,
+  status: { type: String, default: "pending" },
   exists: { type: Boolean, default: false },
 });
 

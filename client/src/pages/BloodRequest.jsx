@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './BloodReq.css'
 const BloodRequest = () => {
     const [requests, setRequests] = useState([]);
     const [newRequest, setNewRequest] = useState({

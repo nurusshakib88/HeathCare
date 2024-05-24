@@ -3,13 +3,15 @@ import { useDoctor } from "../context/DoctorContext";
 import DoctorArea from "../data/DoctorArea";
 import Location from "../data/Location";
 import { useLogin } from "../context/LoginContext";
-import { Link } from "react-router-dom";
+import { useAppointment } from "../context/AppointmentContext"; // Import the useAppointment hook
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const MakeAnAppointment = () => {
   const { user, isLoggedIn } = useLogin();
-
   const { doctors, generateTimeSlots } = useDoctor();
+  const { addAppointment } = useAppointment(); // Use the addAppointment function from context
+
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedDay, setSelectedDay] = useState(null);
   const [selectedArea, setSelectedArea] = useState("");
@@ -21,6 +23,7 @@ const MakeAnAppointment = () => {
   const [selectedSlotStartTime, setSelectedSlotStartTime] = useState("");
   const [selectedSlotEndTime, setSelectedSlotEndTime] = useState("");
   const [goAppointment, setGoAppointment] = useState(false);
+  const navigate = useNavigate();
 
   const handleSlotSelection = (startTime, endTime) => {
     setSelectedSlotStartTime(startTime);
@@ -79,7 +82,8 @@ const MakeAnAppointment = () => {
       })
       .then((result) => {
         console.log(result);
-        window.location.reload();
+        addAppointment(result.data); // Update the state with the new appointment
+        navigate("/appointments");
       })
       .catch((err) => {
         if (err.response && err.response.status === 400) {
@@ -188,7 +192,13 @@ const MakeAnAppointment = () => {
                       Book an Appointment
                     </button>
                   ) : (
-                    <Link to="/login"> Book an Appointment</Link>
+                    <Link
+                      to="/login"
+                      className="btn btn-success text-secondary ms-auto"
+                    >
+                      {" "}
+                      Book an Appointment
+                    </Link>
                   )}
                 </>
               )}

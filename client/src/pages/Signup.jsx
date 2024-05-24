@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import Location from "../data/Location";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const Signup = () => {
   const [name, setName] = useState("");
@@ -9,6 +11,7 @@ const Signup = () => {
   const [phone, setPhone] = useState("");
   const [age, setAge] = useState("");
   const [sex, setSex] = useState("");
+  const [blood, setBlood] = useState("");
   const [selectedDivision, setSelectedDivision] = useState("");
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [password, setPassword] = useState("");
@@ -40,8 +43,9 @@ const Signup = () => {
       name,
       email,
       phone,
-      sex,
       age,
+      sex,
+      blood,
       selectedDivision,
       selectedDistrict,
       imageUrl,
@@ -91,21 +95,22 @@ const Signup = () => {
         style={{ boxShadow: "0 1px 10px rgb(0,0,0,.3)" }}
       >
         <h1 className="font-bold mb-5 text-xl">Register</h1>
-        <input
-          type="text"
-          placeholder="Full Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="input input-bordered"
-        />
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="input input-bordered"
-        />
-        <div className="grid grid-cols-2 gap-3">
+
+        <div className="grid grid-cols-2 gap-4">
+          <input
+            type="text"
+            placeholder="Full Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="input input-bordered col-span-2"
+          />
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="input input-bordered"
+          />
           <input
             type="text"
             placeholder="Phone Number"
@@ -118,19 +123,18 @@ const Signup = () => {
             placeholder="Date of Birth"
             value={age}
             onChange={(e) => setAge(e.target.value)}
-            className="input input-bordered"
+            className="input input-bordered col-span-2"
           />
-        </div>
-        <div className="grid grid-cols-2 items-center gap-3">
-          <div className="flex items-center gap-3">
-            <label htmlFor="division" className="w-full">
-              Select Division:
-            </label>
+
+          <label className="form-control w-full">
+            <div className="label">
+              <span className="label-text">Select Division</span>
+            </div>
             <select
               id="division"
               value={selectedDivision}
               onChange={handleDivisionChange}
-              className="input w-full input-bordered"
+              className="select w-full select-bordered"
             >
               <option value="">Select Division</option>
               {Location.map((location, index) => (
@@ -139,18 +143,18 @@ const Signup = () => {
                 </option>
               ))}
             </select>
-          </div>
+          </label>
 
-          <div className="flex items-center gap-3">
-            <label htmlFor="district" className="w-full">
-              Select District:
-            </label>
+          <label className="form-control w-full">
+            <div className="label">
+              <span className="label-text">Select District</span>
+            </div>
             <select
               id="district"
               value={selectedDistrict}
               onChange={handleDistrictChange}
               disabled={!selectedDivision}
-              className="input w-full  input-bordered"
+              className="select w-full  select-bordered"
             >
               <option value="">Select District</option>
               {Location.find(
@@ -161,15 +165,47 @@ const Signup = () => {
                 </option>
               ))}
             </select>
-          </div>
+          </label>
+
+          <select
+            value={sex}
+            onChange={(e) => setSex(e.target.value)}
+            className="select w-full select-bordered"
+          >
+            <option value="" disabled>
+              Select Sex
+            </option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+
+          <select
+            value={blood}
+            onChange={(e) => setBlood(e.target.value)}
+            className="select w-full select-bordered"
+          >
+            <option value="" disabled>
+              Blood Group
+            </option>
+            <option value="O -">O -</option>
+            <option value="O +">O +</option>
+            <option value="A -">A -</option>
+            <option value="A -+">A +</option>
+            <option value="B -">B -</option>
+            <option value="B -">B +</option>
+            <option value="AB -">AB -</option>
+            <option value="AB -">AB +</option>
+          </select>
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="input input-bordered col-span-2"
+          />
         </div>
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="input input-bordered"
-        />
+
         <label htmlFor="file-upload" className="cursor-pointer inline-block ">
           {image ? (
             <img

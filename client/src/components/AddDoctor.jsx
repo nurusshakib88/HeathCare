@@ -98,9 +98,13 @@ const AddDoctor = () => {
   };
 
   return (
-    <div className="w-full py-10">
-      <h1 className="text-2xl font-bold text-center mb-10">Add Doctor</h1>
-      <form onSubmit={Submit} className="flex flex-col gap-3 w-full">
+    <div className="w-full py-10 overflow-hidden flex justify-center flex-col items-center">
+      <form
+        onSubmit={Submit}
+        className="flex flex-col gap-3 shadow p-10 rounded-xl"
+        style={{ boxShadow: "0 1px 10px rgb(0,0,0,.3)" }}
+      >
+        <h1 className="text-2xl font-bold text-center mb-10">Add Doctor</h1>
         <div className="grid grid-cols-2 gap-3">
           <input
             type="text"
@@ -144,7 +148,6 @@ const AddDoctor = () => {
             className="input input-bordered"
           />
         </div>
-
         <div className="flex items-center gap-3">
           <div className="flex gap-3 items-center w-full">
             <label htmlFor="division" className="w-full">

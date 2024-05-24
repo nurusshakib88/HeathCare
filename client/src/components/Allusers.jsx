@@ -48,12 +48,14 @@ const Allusers = () => {
   return (
     <div className="w-full py-10">
       <h1 className="text-2xl font-bold text-center mb-10">All Users</h1>
-      <table className="w-full text-center table-lg">
+      <table className="table  table-zebra w-full text-center table-lg">
         <thead className="bg-primary text-secondary">
           <tr>
             <th>Name</th>
             <th>Email</th>
             <th>Phone</th>
+            <th>Sex</th>
+            <th>Blood Group</th>
             <th>Age</th>
             <th>Action</th>
           </tr>
@@ -67,6 +69,8 @@ const Allusers = () => {
                     <td>{user.name}</td>
                     <td>{user.email}</td>
                     <td>{user.phone}</td>
+                    <td>{user.sex}</td>
+                    <td>{user.blood}</td>
                     <td>{user.age}</td>
                     <td>
                       <button

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useLogin } from "./LoginContext";
+
 const AppointmentContext = createContext();
 
 export const useAppointment = () => useContext(AppointmentContext);
@@ -38,9 +39,13 @@ export const AppointmentProvider = ({ children }) => {
       .catch((err) => console.log(err));
   };
 
+  const addAppointment = (appointment) => {
+    setAppointments([...appointments, appointment]);
+  };
+
   return (
     <AppointmentContext.Provider
-      value={{ appointments, setAppointments, handleDelete }}
+      value={{ appointments, setAppointments, handleDelete, addAppointment }}
     >
       {children}
     </AppointmentContext.Provider>

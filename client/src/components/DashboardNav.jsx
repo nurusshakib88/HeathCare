@@ -3,34 +3,16 @@ import { Link, NavLink } from "react-router-dom";
 import { useLogin } from "../context/LoginContext";
 import Logout from "./Logout";
 
-const Navbar = () => {
+const DashboardNav = () => {
   const { isLoggedIn, user } = useLogin();
   return (
-    <div className="navbar sticky top-0 z-40 h-[10vh] bg-base-100 px-32">
+    <div className="navbar sticky top-0 z-40 h-[10vh] bg-base-100">
       <div className="navbar-start">
         <NavLink to="/" className="text-2xl font-bold">
           shushastho<span className="text-primary">.</span>
         </NavLink>
       </div>
-      <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1 font-medium">
-          <li>
-            <NavLink to="/">Home</NavLink>
-          </li>
-          <li>
-            <NavLink to="/make-an-appointment">Make An Appointment</NavLink>
-          </li>
-          <li>
-            <NavLink to="/ambulance">Ambulance</NavLink>
-          </li>
-          <li>
-            <NavLink to="/blood-bank">Blood Bank</NavLink>
-          </li>
-          <li>
-            <NavLink to="/contact">Contact</NavLink>
-          </li>
-        </ul>
-      </div>
+
       <div className="navbar-end">
         {isLoggedIn && user ? (
           <div className="dropdown dropdown-end">
@@ -77,4 +59,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default DashboardNav;

@@ -1,4 +1,10 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter,
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+} from "react-router-dom";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
@@ -19,10 +25,14 @@ import BloodRequest from "./pages/BloodRequest";
 
 const App = () => {
   const { isLoggedIn } = useLogin();
+  const location = useLocation();
+
+  // Check if the current path is "/dashboard"
+  const isDashboard = location.pathname === "/dashboard";
 
   return (
-    <BrowserRouter>
-      <Navbar />
+    <>
+      {!isDashboard && <Navbar />}
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Home />} />
@@ -34,17 +44,16 @@ const App = () => {
         </Route>
         <Route path="/register" element={<Signup />} />
         <Route path="*" element={<Error />} />
-        <Route path="/Blood" element={<BloodInventory/>} />
+        <Route path="/Blood" element={<BloodInventory />} />
 
         <Route path="/blood-bank" element={<BloodBank />}>
-            <Route path="inventory" element={<BloodInventory />} />
-            <Route path="donors" element={<BloodDonorList />} />
-            <Route path="requests" element={<BloodRequest />} />
-          </Route>
-          
+          <Route path="inventory" element={<BloodInventory />} />
+          <Route path="donors" element={<BloodDonorList />} />
+          <Route path="requests" element={<BloodRequest />} />
+        </Route>
       </Routes>
-      <Footer />
-    </BrowserRouter>
+      {!isDashboard && <Footer />}
+    </>
   );
 };
 
