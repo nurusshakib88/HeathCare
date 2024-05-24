@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import AddDoctor from "../components/AddDoctor";
 import AllDoctors from "../components/AllDoctors";
 import Allusers from "../components/Allusers";
-import BloodInventory from "./BloodInventory";
+// import BloodInventory from "./BloodInventory";
 
 const Dashboard = () => {
   const [success, setSuccess] = useState();
