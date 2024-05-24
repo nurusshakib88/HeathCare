@@ -1,19 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import AddDoctor from "../components/AddDoctor";
 import AllDoctors from "../components/AllDoctors";
 import Allusers from "../components/Allusers";
-import DashboardNav from "../components/DashboardNav";
-import {
-  Add,
-  LogoutOutlined,
-  Medication,
-  PeopleAlt,
-} from "@mui/icons-material";
-
-import Footer from "../components/Footer";
-import Logout from "../components/Logout";
 
 const Dashboard = () => {
   const [success, setSuccess] = useState();
