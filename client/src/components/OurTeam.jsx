@@ -3,7 +3,7 @@ import { useDoctor } from "../context/DoctorContext";
 const OurTeam = () => {
   const { doctors, handleDelete, generateTimeSlots } = useDoctor();
   return (
-    <div>
+    <div className="my-20">
       <h2 className="text-xl font-medium text-primary mb-2">Team</h2>
       <h1 className="font-bold text-5xl pe-5 mb-5">Our Team</h1>
 

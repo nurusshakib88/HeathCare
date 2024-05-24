@@ -10,5 +10,6 @@ router.delete(
   "/deleteappointment/:id",
   AppointmentController.deleteAppointment
 );
+router.put("/editappointment/:id", AppointmentController.editAppointment);
 
 module.exports = router;

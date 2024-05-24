@@ -150,81 +150,133 @@
 //     }
 // };
 
-const BloodRequest = require('../models/BloodRequestModel');
+const BloodRequest = require("../models/BloodRequestModel");
 
 exports.createBloodRequest = async (req, res) => {
-    try {
-        const { userId, bloodGroup, quantity, urgency, country, division, district, city, contactInfo, caption } = req.body;
-        const newRequest = new BloodRequest({ userId, bloodGroup, quantity, urgency, country, division, district, city, contactInfo, caption });
-        await newRequest.save();
-        res.status(201).json(newRequest);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+  try {
+    const {
+      name,
+      userId,
+      bloodGroup,
+      quantity,
+      urgency,
+      country,
+      division,
+      district,
+      city,
+      contactInfo,
+      caption,
+    } = req.body;
+    const newRequest = new BloodRequest({
+      name,
+      userId,
+      bloodGroup,
+      quantity,
+      urgency,
+      country,
+      division,
+      district,
+      city,
+      contactInfo,
+      caption,
+    });
+    await newRequest.save();
+    res.status(201).json(newRequest);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 exports.getAllBloodRequests = async (req, res) => {
-    try {
-        const bloodRequests = await BloodRequest.find().sort({ createdAt: -1 });
-        res.status(200).json(bloodRequests);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+  try {
+    const bloodRequests = await BloodRequest.find().sort({ createdAt: -1 });
+    res.status(200).json(bloodRequests);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 exports.addComment = async (req, res) => {
-    try {
-        const { requestId, userId, comment } = req.body;
-        const request = await BloodRequest.findById(requestId);
-        if (!request) {
-            return res.status(404).json({ message: 'Blood request not found' });
-        }
-        request.comments.push({ userId, comment });
-        await request.save();
-        res.status(200).json(request);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
+  try {
+    const { requestId, userId, comment, name } = req.body;
+    const request = await BloodRequest.findById(requestId);
+    if (!request) {
+      return res.status(404).json({ message: "Blood request not found" });
     }
+    request.comments.push({ userId, comment });
+    await request.save();
+    res.status(200).json(request);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 exports.updateBloodRequest = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const { bloodGroup, quantity, urgency, country, division, district, city, contactInfo, caption } = req.body;
-        const updatedRequest = await BloodRequest.findByIdAndUpdate(id, { bloodGroup, quantity, urgency, country, division, district, city, contactInfo, caption }, { new: true });
-        res.status(200).json(updatedRequest);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+  try {
+    const { id } = req.params;
+    const {
+      bloodGroup,
+      quantity,
+      urgency,
+      country,
+      division,
+      district,
+      city,
+      contactInfo,
+      caption,
+    } = req.body;
+    const updatedRequest = await BloodRequest.findByIdAndUpdate(
+      id,
+      {
+        bloodGroup,
+        quantity,
+        urgency,
+        country,
+        division,
+        district,
+        city,
+        contactInfo,
+        caption,
+      },
+      { new: true }
+    );
+    res.status(200).json(updatedRequest);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 exports.deleteBloodRequest = async (req, res) => {
-    try {
-        const { id } = req.params;
-        await BloodRequest.findByIdAndDelete(id);
-        res.status(200).json({ message: 'Blood request deleted successfully' });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+  try {
+    const { id } = req.params;
+    await BloodRequest.findByIdAndDelete(id);
+    res.status(200).json({ message: "Blood request deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 exports.updateComment = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const { comment } = req.body;
-        const request = await BloodRequest.findOneAndUpdate({ 'comments._id': id }, { $set: { 'comments.$.comment': comment } }, { new: true });
-        res.status(200).json(request);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+  try {
+    const { id } = req.params;
+    const { comment } = req.body;
+    const request = await BloodRequest.findOneAndUpdate(
+      { "comments._id": id },
+      { $set: { "comments.$.comment": comment } },
+      { new: true }
+    );
+    res.status(200).json(request);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 exports.deleteComment = async (req, res) => {
-    try {
-        const { id } = req.params;
-        await BloodRequest.updateOne({}, { $pull: { comments: { _id: id } } });
-        res.status(200).json({ message: 'Comment deleted successfully' });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+  try {
+    const { id } = req.params;
+    await BloodRequest.updateOne({}, { $pull: { comments: { _id: id } } });
+    res.status(200).json({ message: "Comment deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };

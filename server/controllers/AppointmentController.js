@@ -49,6 +49,19 @@ const AppointmentController = {
       .then((result) => res.json(result))
       .catch((err) => res.json(err));
   },
+  editAppointment: (req, res) => {
+    const id = req.params.id;
+    const updateFields = req.body;
+
+    AppointmentModel.findByIdAndUpdate(id, updateFields, { new: true })
+      .then((updatedAppointment) => {
+        if (!updatedAppointment) {
+          return res.status(404).json({ message: "Appointment not found" });
+        }
+        res.json(updatedAppointment);
+      })
+      .catch((err) => res.status(500).json({ error: err.message }));
+  },
 };
 
 module.exports = AppointmentController;

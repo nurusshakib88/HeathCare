@@ -7,7 +7,9 @@ const DashboardNav = () => {
   const { isLoggedIn, user } = useLogin();
   return (
     <div className="navbar sticky top-0 z-40 h-[10vh] bg-base-100">
-      <div className="navbar-start">
+      <div className="navbar-start"></div>
+
+      <div className="navbar-center">
         <NavLink to="/" className="text-2xl font-bold">
           shushastho<span className="text-primary">.</span>
         </NavLink>

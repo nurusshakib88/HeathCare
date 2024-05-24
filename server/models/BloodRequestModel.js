@@ -91,27 +91,30 @@
 
 // module.exports = BloodRequest;
 
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const BloodRequestSchema = new mongoose.Schema({
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    bloodGroup: { type: String, required: true },
-    quantity: { type: Number },
-    urgency: { type: String, required: true },
-    country: { type: String },
-    division: { type: String },
-    district: { type: String },
-    city: { type: String },
-    contactInfo: { type: String, required: true },
-    caption: { type: String }, // New field for the caption
-    comments: [{
-        userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-        comment: { type: String },
-        createdAt: { type: Date, default: Date.now }
-    }],
-    createdAt: { type: Date, default: Date.now }
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  bloodGroup: { type: String, required: true },
+  quantity: { type: Number },
+  urgency: { type: String, required: true },
+  country: { type: String },
+  division: { type: String },
+  district: { type: String },
+  city: { type: String },
+  contactInfo: { type: String, required: true },
+  caption: { type: String }, // New field for the caption
+  comments: [
+    {
+      userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+      name: { type: String, ref: "User" },
+      comment: { type: String },
+      createdAt: { type: Date, default: Date.now },
+    },
+  ],
+  createdAt: { type: Date, default: Date.now },
 });
 
-const BloodRequest = mongoose.model('BloodRequest', BloodRequestSchema);
+const BloodRequest = mongoose.model("BloodRequest", BloodRequestSchema);
 
 module.exports = BloodRequest;
