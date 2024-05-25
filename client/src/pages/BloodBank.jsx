@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import BloodInventory from "./BloodInventory";
 import BloodDonorList from "./BloodDonorList";
 import BloodRequest from "./BloodRequest";
@@ -18,6 +18,14 @@ import BloodBankNav from "../components/BloodBankNav";
 const BloodBank = () => {
   const [currentComponent, setCurrentComponent] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    // Parse the URL query parameter to determine the current view
+    const params = new URLSearchParams(location.search);
+    const view = params.get("view");
+    setCurrentComponent(view);
+  }, [location.search]);
 
   const handleNavigation = (component) => {
     setCurrentComponent(component);
@@ -53,20 +61,32 @@ const BloodBank = () => {
           <div className="flex flex-col">
             <button
               onClick={() => handleNavigation("BloodInventory")}
-              className="flex gap-2 hover:bg-secondary hover:text-primary transition-all duration-300 ease-in-out px-2 py-3"
+              className={`flex gap-2 hover:bg-secondary hover:text-primary transition-all duration-300 ease-in-out px-2 py-3 ${
+                currentComponent === "BloodInventory"
+                  ? "bg-secondary text-primary"
+                  : ""
+              }`}
             >
               <Inventory /> Blood Inventory
             </button>
             <button
               onClick={() => handleNavigation("BloodDonorList")}
-              className="flex gap-2 hover:bg-secondary hover:text-primary transition-all duration-300 ease-in-out px-2 py-3"
+              className={`flex gap-2 hover:bg-secondary hover:text-primary transition-all duration-300 ease-in-out px-2 py-3 ${
+                currentComponent === "BloodDonorList"
+                  ? "bg-secondary text-primary"
+                  : ""
+              }`}
             >
               <WaterDrop /> Blood Donor List
             </button>
 
             <button
               onClick={() => handleNavigation("BloodRequest")}
-              className="flex gap-2 hover:bg-secondary hover:text-primary transition-all duration-300 ease-in-out px-2 py-3"
+              className={`flex gap-2 hover:bg-secondary hover:text-primary transition-all duration-300 ease-in-out px-2 py-3 ${
+                currentComponent === "BloodRequest"
+                  ? "bg-secondary text-primary"
+                  : ""
+              }`}
             >
               <PostAdd /> Blood Request
             </button>

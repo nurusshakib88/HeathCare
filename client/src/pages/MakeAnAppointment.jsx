@@ -63,7 +63,7 @@ const MakeAnAppointment = () => {
     e.preventDefault();
 
     axios
-      .post(`http://localhost:3001/appointments/add`, {
+      .post(`/api/appointments/add`, {
         userId,
         userName,
         doctorName,

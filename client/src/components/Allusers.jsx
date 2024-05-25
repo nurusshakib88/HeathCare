@@ -10,7 +10,7 @@ const Allusers = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("http://localhost:3001/users/all", {
+        const response = await axios.get(`/api/users/all`, {
           withCredentials: true,
         });
         setUsers(response.data);
@@ -29,7 +29,7 @@ const Allusers = () => {
 
   const handleDelete = (id) => {
     axios
-      .delete(`http://localhost:3001/users/deleteuser/${id}`)
+      .delete(`/api/users/deleteuser/${id}`)
       .then((res) => {
         console.log(res);
         setUsers(users.filter((user) => user._id !== id));

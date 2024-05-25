@@ -62,7 +62,7 @@ const AddDoctor = () => {
       availability,
     };
     try {
-      await axios.post(`http://localhost:3001/doctors/add`, formData);
+      axios.post(`/api/doctors/add`, formData);
       window.location.reload();
     } catch (err) {
       console.log(err);

@@ -18,13 +18,13 @@ export const LoginProvider = ({ children }) => {
       if (isLoggedIn) {
         setLoading(true);
         try {
-          const response = await axios.get("http://localhost:3001/me", {
+          const response = await axios.get(`/api/me`, {
             withCredentials: true,
           });
           setUser(response.data.user);
           setError(null); // Clear previous errors
         } catch (error) {
-          console.error("Error fetching user:", error); 
+          console.error("Error fetching user:", error);
           setError(
             error.response ? error.response.data.message : "An error occurred"
           );

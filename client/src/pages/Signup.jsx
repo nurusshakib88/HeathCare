@@ -52,7 +52,7 @@ const Signup = () => {
       password,
     };
     try {
-      await axios.post("http://localhost:3001/register", formData);
+      await axios.post(`/api/register`, formData);
       navigate("/login");
     } catch (error) {
       console.log(error);

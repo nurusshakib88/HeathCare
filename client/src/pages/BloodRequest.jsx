@@ -22,7 +22,7 @@ const BloodRequest = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/blood-requests/all")
+      .get(`/api/blood-requests/all`)
       .then((response) => {
         setRequests(response.data);
       })
@@ -38,7 +38,7 @@ const BloodRequest = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:3001/blood-requests/create", {
+      .post(`/api/blood-requests/create`, {
         ...newRequest,
         userId: user._id, // Include the user ID when creating a blood request
       })
@@ -69,7 +69,7 @@ const BloodRequest = () => {
   const handleCommentSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:3001/blood-requests/comment", {
+      .post(`/api/blood-requests/comment`, {
         requestId: selectedRequestId,
         userId: user._id,
         comment: newComment,
@@ -93,7 +93,7 @@ const BloodRequest = () => {
 
         setRequests(updatedRequests);
         setNewComment("");
-        document.getElementById(`commentModal-${selectedRequestId}`).close();
+        // No need to close the modal here
       })
       .catch((error) => {
         console.error("There was an error adding the comment!", error);

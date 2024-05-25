@@ -30,7 +30,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/dashboard")
+      .get(`/api/dashboard`)
       .then((res) => {
         if (res.data === "Success") {
           setSuccess(true); // Set success state to true if login is successful

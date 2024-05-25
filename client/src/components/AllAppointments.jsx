@@ -21,8 +21,8 @@ const AllAppointments = () => {
   const handleSaveClick = async () => {
     // Send updated appointment to backend
     try {
-      await axios.put(
-        `http://localhost:3001/appointments/editappointment/${editableAppointment._id}`,
+      axios.put(
+        `/api/appointments/editappointment/${editableAppointment._id}`,
         editableAppointment
       );
       setEditableAppointment(null); // Clear editableAppointment state

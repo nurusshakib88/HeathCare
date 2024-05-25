@@ -22,7 +22,7 @@ const Ambulance = () => {
   useEffect(() => {
     const fetchAmbulances = async () => {
       try {
-        const response = await axios.get("http://localhost:3001/ambulances");
+        const response = await axios.get(`/api/ambulances`);
         setAmbulances(response.data);
       } catch (error) {
         console.error("Error fetching ambulances:", error);
@@ -48,7 +48,7 @@ const Ambulance = () => {
 
   const handleDeleteClick = async (id) => {
     try {
-      await axios.delete(`http://localhost:3001/ambulances/${id}`);
+      await axios.delete(`/api/ambulances/${id}`);
       setAmbulances(ambulances.filter((ambulance) => ambulance._id !== id));
     } catch (error) {
       console.error("Error deleting ambulance:", error);
@@ -64,7 +64,7 @@ const Ambulance = () => {
     e.preventDefault();
     try {
       const response = await axios.put(
-        `http://localhost:3001/ambulances/${editingAmbulance._id}`,
+        `/api/ambulances/${editingAmbulance._id}`,
         formData
       );
       setAmbulances(
@@ -82,10 +82,7 @@ const Ambulance = () => {
   const handleAddAmbulanceSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        "http://localhost:3001/ambulances",
-        formData
-      );
+      const response = await axios.post(`/api/ambulances`, formData);
       setAmbulances([...ambulances, response.data]);
       setAddingAmbulance(false);
       setFormData({

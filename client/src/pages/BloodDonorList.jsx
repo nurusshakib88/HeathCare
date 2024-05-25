@@ -32,7 +32,7 @@ const BloodDonorList = () => {
   useEffect(() => {
     const fetchDonors = async () => {
       try {
-        const response = await axios.get("http://localhost:3001/donors");
+        const response = await axios.get(`/api/donors`);
         setDonors(response.data);
       } catch (error) {
         console.error("Error fetching donors:", error);
@@ -54,7 +54,7 @@ const BloodDonorList = () => {
 
   const handleDeleteClick = async (id) => {
     try {
-      await axios.delete(`http://localhost:3001/donors/${id}`);
+      await axios.delete(`/api/donors/${id}`);
       setDonors(donors.filter((donor) => donor._id !== id));
     } catch (error) {
       console.error("Error deleting donor:", error);
@@ -70,7 +70,7 @@ const BloodDonorList = () => {
     e.preventDefault();
     try {
       const response = await axios.put(
-        `http://localhost:3001/donors/${editingDonor._id}`,
+        `/api/donors/${editingDonor._id}`,
         formData
       );
       setDonors(
@@ -87,10 +87,7 @@ const BloodDonorList = () => {
   const handleAddDonorSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        "http://localhost:3001/donors/add",
-        formData
-      );
+      const response = await axios.post(`/api/donors/add`, formData);
       setDonors([...donors, response.data]);
       setAddingDonor(false);
       setFormData({ name: "", address: "", bloodGroup: "", contactInfo: "" });
