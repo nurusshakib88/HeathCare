@@ -1,64 +1,72 @@
-
 import { useEffect, useState } from 'react';
 import AmbulanceBanner from '../components/AmbulanceBanner';
 import { useLogin } from '../context/LoginContext';
 import axios from 'axios';
 import {
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    Paper,
-    Grid,
-    TextField,
-    Button,
-  } from "@mui/material";
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Button,
+  Modal,
+  TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@mui/material";
+
 const Ambulance = () => {
-
-    const [donors, setDonors] = useState([]);
-  const [addingDonor, setAddingDonor] = useState(false);
-  const { user } = useLogin();
-  const [editingDonor, setEditingDonor] = useState(null);
+  const [ambulances, setAmbulances] = useState([]);
+  const [addingAmbulance, setAddingAmbulance] = useState(false);
+  const [editingAmbulance, setEditingAmbulance] = useState(null);
   const [filter, setFilter] = useState("");
-
   const [formData, setFormData] = useState({
     name: "",
     address: "",
-    bloodGroup: "",
+    ambulanceTitle: "",
+    ambulanceNumber: "",
+    icuService: false,
     contactInfo: "",
+    city: "",
   });
 
   useEffect(() => {
-    const fetchDonors = async () => {
+    const fetchAmbulances = async () => {
       try {
-        const response = await axios.get("http://localhost:3001/donors");
-        setDonors(response.data);
+        const response = await axios.get("http://localhost:3001/ambulances");
+        setAmbulances(response.data);
       } catch (error) {
-        console.error("Error fetching donors:", error);
+        console.error("Error fetching ambulances:", error);
       }
     };
 
-    fetchDonors();
+    fetchAmbulances();
   }, []);
 
-  const handleEditClick = (donor) => {
-    setEditingDonor(donor);
+  const handleEditClick = (ambulance) => {
+    setEditingAmbulance(ambulance);
     setFormData({
-      name: donor.name,
-      address: donor.address,
-      bloodGroup: donor.bloodGroup,
-      contactInfo: donor.contactInfo,
+      name: ambulance.name,
+      address: ambulance.address,
+      ambulanceTitle: ambulance.ambulanceTitle,
+      ambulanceNumber: ambulance.ambulanceNumber,
+      icuService: ambulance.icuService,
+      contactInfo: ambulance.contactInfo,
+      city: ambulance.city,
     });
+    setAddingAmbulance(true);
   };
 
   const handleDeleteClick = async (id) => {
     try {
-      await axios.delete(`http://localhost:3001/donors/${id}`);
-      setDonors(donors.filter((donor) => donor._id !== id));
+      await axios.delete(`http://localhost:3001/ambulances/${id}`);
+      setAmbulances(ambulances.filter((ambulance) => ambulance._id !== id));
     } catch (error) {
-      console.error("Error deleting donor:", error);
+      console.error("Error deleting ambulance:", error);
     }
   };
 
@@ -71,262 +79,240 @@ const Ambulance = () => {
     e.preventDefault();
     try {
       const response = await axios.put(
-        `http://localhost:3001/donors/${editingDonor._id}`,
+        `http://localhost:3001/ambulances/${editingAmbulance._id}`,
         formData,
       );
-      setDonors(
-        donors.map((donor) =>
-          donor._id === editingDonor._id ? response.data : donor,
+      setAmbulances(
+        ambulances.map((ambulance) =>
+          ambulance._id === editingAmbulance._id ? response.data : ambulance,
         ),
       );
-      setEditingDonor(null);
+      setEditingAmbulance(null);
+      setAddingAmbulance(false);
     } catch (error) {
-      console.error("Error updating donor:", error);
+      console.error("Error updating ambulance:", error);
     }
   };
 
-  const handleAddDonorSubmit = async (e) => {
+  const handleAddAmbulanceSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:3001/donors/add",
+        "http://localhost:3001/ambulances",
         formData,
       );
-      setDonors([...donors, response.data]);
-      setAddingDonor(false);
-      setFormData({ name: "", address: "", bloodGroup: "", contactInfo: "" });
+      setAmbulances([...ambulances, response.data]);
+      setAddingAmbulance(false);
+      setFormData({
+        name: "",
+        address: "",
+        ambulanceTitle: "",
+        ambulanceNumber: "",
+        icuService: false,
+        contactInfo: "",
+        city: "",
+      });
     } catch (error) {
-      console.error("Error adding donor:", error);
+      console.error("Error adding ambulance:", error);
     }
   };
-  const filteredDonors = donors.filter(
-    (donor) =>
-      donor.name.toLowerCase().includes(filter.toLowerCase()) ||
-      donor.address.toLowerCase().includes(filter.toLowerCase()) ||
-      donor.bloodGroup.toLowerCase().includes(filter.toLowerCase()) ||
-      donor.contactInfo.toLowerCase().includes(filter.toLowerCase()),
-  );
-    return (
-        <div>
-            <AmbulanceBanner
-            // imageUrl="../../public/Screenshot 2024-05-25 150445.png"
-            imageUrl="../../public/photo_2024-05-25_15-44-18.jpg"
-            title="Welcome to Our Website"
-            subtitle="We are glad to have you here"
-            ></AmbulanceBanner>
 
+  const handleSearchChange = (e) => {
+    setFilter(e.target.value);
+  };
 
-
-<div className="px-32">
-      <h1 className="text-2xl font-bold mb-4">Donors</h1>
-      <Grid container spacing={2} alignItems="center">
-        <Grid item xs={12} sm={6}>
-          <TextField
-            fullWidth
-            label="Filter Donors"
-            variant="outlined"
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
-          />
-        </Grid>
-      </Grid>
+  return (
+    <div>
+        <AmbulanceBanner
+        imageUrl="../../public/photo_2024-05-25_15-44-18.jpg"
+        title="Ambulance service"
+        subtitle="We are ready for 24/h"
+        ></AmbulanceBanner>
+      <div>
+        <TextField
+          fullWidth
+          label="Search"
+          variant="outlined"
+          value={filter}
+          onChange={handleSearchChange}
+        />
+      </div>
+      <div>
+        <Button
+          onClick={() => {
+            setAddingAmbulance(true);
+            setEditingAmbulance(null);
+          }}
+          variant="contained"
+          color="primary"
+          className="my-4"
+        >
+          Add Info
+        </Button>
+      </div>
       <TableContainer component={Paper} className="my-4">
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
               <TableCell>Name</TableCell>
               <TableCell>Address</TableCell>
-              <TableCell>Blood Group</TableCell>
+              <TableCell>Ambulance Title</TableCell>
+              <TableCell>Ambulance Number</TableCell>
+              <TableCell>ICU Service</TableCell>
               <TableCell>Contact Info</TableCell>
-
-              {user?.role === "admin" && (
-                <>
-                  <TableCell>Actions</TableCell>
-                </>
-              )}
+              <TableCell>City</TableCell>
+              <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredDonors.length > 0 ? (
-              filteredDonors.map((donor) => (
-                <TableRow key={donor._id}>
-                  <TableCell>{donor.name}</TableCell>
-                  <TableCell>{donor.address}</TableCell>
-                  <TableCell>{donor.bloodGroup}</TableCell>
-                  <TableCell>{donor.contactInfo}</TableCell>
+            {ambulances
+              .filter(
+                (ambulance) =>
+                  ambulance.name.toLowerCase().includes(filter.toLowerCase()) ||
+                  ambulance.address.toLowerCase().includes(filter.toLowerCase()) ||
+                  ambulance.ambulanceTitle.toLowerCase().includes(filter.toLowerCase()) ||
+                  ambulance.ambulanceNumber.toLowerCase().includes(filter.toLowerCase()) ||
+                  ambulance.contactInfo.toLowerCase().includes(filter.toLowerCase()) ||
+                  ambulance.city.toLowerCase().includes(filter.toLowerCase())
+              )
+              .map((ambulance) => (
+                <TableRow key={ambulance._id}>
+                  <TableCell>{ambulance.name}</TableCell>
+                  <TableCell>{ambulance.address}</TableCell>
+                  <TableCell>{ambulance.ambulanceTitle}</TableCell>
+                  <TableCell>{ambulance.ambulanceNumber}</TableCell>
+                  <TableCell>{ambulance.icuService ? "Yes" : "No"}</TableCell>
+                  <TableCell>{ambulance.contactInfo}</TableCell>
+                  <TableCell>{ambulance.city}</TableCell>
                   <TableCell>
-                    {user?.role === "admin" && (
-                      <>
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          onClick={() => handleEditClick(donor)}
-                        >
-                          Edit
-                        </Button>
-                        <Button
-                          variant="contained"
-                          color="secondary"
-                          onClick={() => handleDeleteClick(donor._id)}
-                          className="ml-2"
-                        >
-                          Delete
-                        </Button>
-                      </>
-                    )}
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => handleEditClick(ambulance)}
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      onClick={() => handleDeleteClick(ambulance._id)}
+                      className="ml-2"
+                    >
+                      Delete
+                    </Button>
                   </TableCell>
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={5}>No donors available</TableCell>
-              </TableRow>
-            )}
+              ))}
           </TableBody>
         </Table>
       </TableContainer>
-      <div>
-        <button
-          onClick={() => setAddingDonor(true)}
-          className="my-4 btn btn-primary"
-        >
-          Become a Donor
-        </button>
-      </div>
 
-      {addingDonor && (
-        <div className="inmodal">
-          <div className="inmodal-box">
-            <h2 className="text-xl font-bold">Became A Donor</h2>
-            <form onSubmit={handleAddDonorSubmit}>
-              <div className="mb-2">
-                <label className="block">Name</label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="input input-bordered w-full"
-                />
-              </div>
-
-              <div className="mb-2">
-                <label className="block">Address</label>
-                <input
-                  type="text"
-                  name="address"
-                  value={formData.address}
-                  onChange={handleChange}
-                  className="input input-bordered w-full"
-                />
-              </div>
-              <div className="mb-2">
-                <label className="block">Blood Group</label>
-                <input
-                  type="text"
-                  name="bloodGroup"
-                  value={formData.bloodGroup}
-                  onChange={handleChange}
-                  className="input input-bordered w-full"
-                />
-              </div>
-              <div className="mb-2">
-                <label className="block">Contact Info</label>
-                <input
-                  type="text"
-                  name="contactInfo"
-                  value={formData.contactInfo}
-                  onChange={handleChange}
-                  className="input input-bordered w-full"
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="mt-2 px-4 py-2 btn btn-primary text-white rounded"
-              >
-                Add Donor
-              </button>
-              <button
-                onClick={() => setAddingDonor(false)}
-                className="ml-2 px-4 py-2 bg-gray-500 text-white rounded"
-              >
-                Cancel
-              </button>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {editingDonor && (
-        <div className="inmodal">
-          <div className="inmodal-box">
-            <h2 className="text-xl font-bold">Edit Inventory</h2>
-            <form onSubmit={handleUpdateSubmit}>
-              <div className="mb-2">
-                <label className="block">Name</label>
-                <input
-                  type="text"
-                  name="bloodGroup"
-                  value={formData.bloodGroup}
-                  onChange={handleChange}
-                  className="input input-bordered w-full"
-                />
-              </div>
-              <div className="mb-2">
-                <label className="block">Address</label>
-                <input
-                  type="text"
-                  name="address"
-                  value={formData.address}
-                  onChange={handleChange}
-                  className="input input-bordered w-full"
-                />
-              </div>
-              <div className="mb-2">
-                <label className="block">Blood Group</label>
-                <input
-                  type="text"
-                  name="bloodGroup"
-                  value={formData.bloodGroup}
-                  onChange={handleChange}
-                  className="input input-bordered w-full"
-                />
-              </div>
-              <div className="mb-2">
-                <label className="block">Contact Info</label>
-                <input
-                  type="text"
-                  name="contactInfo"
-                  value={formData.contactInfo}
-                  onChange={handleChange}
-                  className="input input-bordered w-full"
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="mt-2 px-4 py-2 bg-green-500 text-white rounded"
-              >
-                Update
-              </button>
-              <button
-                onClick={() => setEditingDonor(null)}
-                className="ml-2 px-4 py-2 bg-gray-500 text-white rounded"
-              >
-                Cancel
-              </button>
-            </form>
-          </div>
-        </div>
-      )}
-    </div>
-
-
-            
-            
-        </div>
-    );
+      <Modal
+        open={addingAmbulance}
+        onClose={() => setAddingAmbulance(false)}
+        aria-labelledby="add-ambulance-modal-title"
+        aria-describedby="add-ambulance-modal-description"
+      >
+        <div className="modal-container bg-slate-600">
+          <div className="modal-content">
+            <h2 id="add-ambulance-modal-title">Add New Ambulance</h2>
+            <form onSubmit={editingAmbulance ? handleUpdateSubmit : handleAddAmbulanceSubmit}>
+              <TextField
+                label="Name"
+                variant="outlined"
+                fullWidth
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                className="mb-2"
+              />
+              <TextField
+                label="Address"
+                variant="outlined"
+                fullWidth
+                name="address"
+                value={formData.address}
+                onChange={handleChange}
+                className="mb-2"
+              />
+              <TextField
+                label="Ambulance Title"
+                variant="outlined"
+                fullWidth
+                name="ambulanceTitle"
+                value={formData.ambulanceTitle}
+                onChange={handleChange}
+                className="mb-2"
+              />
+              <TextField
+               
+               label="Ambulance Number"
+               variant="outlined"
+               fullWidth
+               name="ambulanceNumber"
+               value={formData.ambulanceNumber}
+               onChange={handleChange}
+               className="mb-2"
+             />
+             <FormControl fullWidth className="mb-2">
+               <InputLabel id="icuService-label">ICU Service</InputLabel>
+               <Select
+                 labelId="icuService-label"
+                 id="icuService"
+                 value={formData.icuService}
+                 onChange={handleChange}
+                 name="icuService"
+               >
+                 <MenuItem value={true}>Yes</MenuItem>
+                 <MenuItem value={false}>No</MenuItem>
+               </Select>
+             </FormControl>
+             <TextField
+               label="Contact Info"
+               variant="outlined"
+               fullWidth
+               name="contactInfo"
+               value={formData.contactInfo}
+               onChange={handleChange}
+               className="mb-2"
+             />
+             <TextField
+               label="City"
+               variant="outlined"
+               fullWidth
+               name="city"
+               value={formData.city}
+               onChange={handleChange}
+               className="mb-2"
+             />
+             <Button type="submit" variant="contained" color="primary" className="mb-2">
+               {editingAmbulance ? "Update Ambulance" : "Add Ambulance"}
+             </Button>
+             <Button
+               onClick={() => {
+                 setAddingAmbulance(false);
+                 setFormData({
+                   name: "",
+                   address: "",
+                   ambulanceTitle: "",
+                   ambulanceNumber: "",
+                   icuService: false,
+                   contactInfo: "",
+                   city: "",
+                 });
+               }}
+               variant="contained"
+               color="secondary"
+               className="mb-2 ml-2"
+             >
+               Cancel
+             </Button>
+           </form>
+         </div>
+       </div>
+     </Modal>
+   </div>
+ );
 };
 
 export default Ambulance;
