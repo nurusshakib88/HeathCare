@@ -187,24 +187,31 @@ exports.createBloodRequest = async (req, res) => {
   }
 };
 
+
 exports.getAllBloodRequests = async (req, res) => {
   try {
-    const bloodRequests = await BloodRequest.find().sort({ createdAt: -1 });
+    const bloodRequests = await BloodRequest.find()
+      .populate('userId', 'name') // Populate user details for the blood request
+      .populate('comments.userId', 'name') // Populate user details for the comments
+      .sort({ createdAt: -1 });
+
     res.status(200).json(bloodRequests);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
+
 exports.addComment = async (req, res) => {
   try {
-    const { requestId, userId, comment, name } = req.body;
+    const { requestId, userId, comment } = req.body;
     const request = await BloodRequest.findById(requestId);
     if (!request) {
       return res.status(404).json({ message: "Blood request not found" });
     }
     request.comments.push({ userId, comment });
     await request.save();
+    await request.populate('comments.userId', 'name'); // Populate user details for the new comment
     res.status(200).json(request);
   } catch (error) {
     res.status(500).json({ message: error.message });
