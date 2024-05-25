@@ -29,10 +29,11 @@ const App = () => {
 
   // Check if the current path is "/dashboard"
   const isDashboard = location.pathname === "/dashboard";
+  const isBloodBank = location.pathname === "/blood-bank";
 
   return (
     <>
-      {!isDashboard && <Navbar />}
+      {!isDashboard && !isBloodBank && <Navbar />}
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Home />} />
@@ -52,7 +53,7 @@ const App = () => {
           <Route path="requests" element={<BloodRequest />} />
         </Route>
       </Routes>
-      {!isDashboard && <Footer />}
+      {!isDashboard && !isBloodBank && <Footer />}
     </>
   );
 };
