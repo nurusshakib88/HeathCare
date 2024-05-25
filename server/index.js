@@ -9,6 +9,8 @@ const BloodInventoryRoutes = require("./routes/BloodInventoryRoutes");
 const BloodRequestRoutes = require("./routes/BloodRequestRoutes");
 const DonorRoutes = require("./routes/DonorRoutes");
 const BloodPostRoutes = require("./routes/BloodPostRoutes");
+const AmbulanceRoute = require("./routes/AmbulanceRoute");
+
 require("dotenv").config();
 
 const app = express();
@@ -36,6 +38,7 @@ app.use("/blood-inventory", BloodInventoryRoutes);
 app.use("/blood-requests", BloodRequestRoutes);
 app.use("/donors", DonorRoutes);
 app.use("/", BloodPostRoutes);
+app.use('/ambulances', AmbulanceRoute);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

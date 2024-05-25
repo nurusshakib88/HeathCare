@@ -22,6 +22,7 @@ import BloodBank from "./pages/BloodBank";
 import BloodInventory from "./pages/BloodInventory";
 import BloodDonorList from "./pages/BloodDonorList";
 import BloodRequest from "./pages/BloodRequest";
+import Ambulance from "./pages/Ambulance";
 
 const App = () => {
   const { isLoggedIn } = useLogin();
@@ -29,13 +30,15 @@ const App = () => {
 
   // Check if the current path is "/dashboard"
   const isDashboard = location.pathname === "/dashboard";
+  const isBloodBank = location.pathname === "/blood-bank";
 
   return (
     <>
-      {!isDashboard && <Navbar />}
+      {!isDashboard && !isBloodBank && <Navbar />}
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Home />} />
+        <Route path="/ambulance" element={<Ambulance></Ambulance>} />
         <Route path="/make-an-appointment" element={<MakeAnAppointment />} />
         <Route element={<ProtectedRoute />}>
           {isLoggedIn && <Route path="/dashboard" element={<Dashboard />} />}
@@ -52,7 +55,7 @@ const App = () => {
           <Route path="requests" element={<BloodRequest />} />
         </Route>
       </Routes>
-      {!isDashboard && <Footer />}
+      {!isDashboard && !isBloodBank && <Footer />}
     </>
   );
 };

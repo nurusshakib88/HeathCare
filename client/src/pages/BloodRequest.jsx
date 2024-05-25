@@ -39,7 +39,7 @@ const BloodRequest = () => {
     axios
       .post("http://localhost:3001/blood-requests/create", {
         ...newRequest,
-        userId: user._id // Include the user ID when creating a blood request
+        userId: user._id, // Include the user ID when creating a blood request
       })
       .then((response) => {
         setRequests([response.data, ...requests]);
@@ -70,19 +70,26 @@ const BloodRequest = () => {
     axios
       .post("http://localhost:3001/blood-requests/comment", {
         requestId: selectedRequestId,
-        userId: user._id, // Include the user ID when adding a comment
+        userId: user._id,
         comment: newComment,
       })
       .then((response) => {
+        const newCommentData = {
+          _id: response.data._id, // assuming response contains the comment ID
+          userId: { _id: user._id, name: user.name },
+          comment: newComment, // use the newComment state value
+        };
+
         const updatedRequests = requests.map((request) => {
           if (request._id === selectedRequestId) {
             return {
               ...request,
-              comments: [...request.comments, response.data],
+              comments: [...request.comments, newCommentData],
             };
           }
           return request;
         });
+
         setRequests(updatedRequests);
         setNewComment("");
         document.getElementById(`commentModal-${selectedRequestId}`).close();
@@ -206,7 +213,8 @@ const BloodRequest = () => {
         {requests.map((request) => (
           <li key={request._id}>
             <p>
-              {request.userId ? request.userId.name : "Unknown User"}: {request.bloodGroup} - {request.quantity} units
+              {request.userId ? request.userId.name : "Unknown User"}:{" "}
+              {request.bloodGroup} - {request.quantity} units
             </p>
             <p>Urgency: {request.urgency}</p>
             <p>
@@ -224,13 +232,10 @@ const BloodRequest = () => {
                   .showModal();
               }}
             >
-              Add Comment
+              View/Add Comments
             </button>
 
-            <dialog
-              id={`commentModal-${request._id}`}
-              className="modal modal-bottom sm:modal-middle"
-            >
+            <dialog id={`commentModal-${request._id}`} className="modal">
               <div className="modal-box">
                 <form method="dialog">
                   <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
@@ -238,7 +243,19 @@ const BloodRequest = () => {
                   </button>
                 </form>
                 <div>
-                  <h3>Add Comment</h3>
+                  <h3>Comments</h3>
+                  <ul>
+                    {request.comments.map((comment) => (
+                      <li key={comment._id}>
+                        <p>
+                          {comment.userId
+                            ? comment.userId.name
+                            : "Unknown User"}
+                          : {comment.comment}
+                        </p>
+                      </li>
+                    ))}
+                  </ul>
                   <form onSubmit={handleCommentSubmit}>
                     <input
                       type="text"
@@ -255,17 +272,6 @@ const BloodRequest = () => {
                 </div>
               </div>
             </dialog>
-
-            <h4>Comments</h4>
-            <ul>
-              {request.comments.map((comment) => (
-                <li key={comment._id}>
-                  <p>
-                    {comment.userId ? comment.userId.name : "Unknown User"}: {comment.comment}
-                  </p>
-                </li>
-              ))}
-            </ul>
           </li>
         ))}
       </ul>
