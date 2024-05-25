@@ -1,23 +1,8 @@
-import { useEffect, useState } from 'react';
-import AmbulanceBanner from '../components/AmbulanceBanner';
-import { useLogin } from '../context/LoginContext';
-import axios from 'axios';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Button,
-  Modal,
-  TextField,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-} from "@mui/material";
+import { useEffect, useState } from "react";
+import AmbulanceBanner from "../components/AmbulanceBanner";
+import { useLogin } from "../context/LoginContext";
+import axios from "axios";
+import { Add, Delete, Edit } from "@mui/icons-material";
 
 const Ambulance = () => {
   const [ambulances, setAmbulances] = useState([]);
@@ -80,12 +65,12 @@ const Ambulance = () => {
     try {
       const response = await axios.put(
         `http://localhost:3001/ambulances/${editingAmbulance._id}`,
-        formData,
+        formData
       );
       setAmbulances(
         ambulances.map((ambulance) =>
-          ambulance._id === editingAmbulance._id ? response.data : ambulance,
-        ),
+          ambulance._id === editingAmbulance._id ? response.data : ambulance
+        )
       );
       setEditingAmbulance(null);
       setAddingAmbulance(false);
@@ -99,7 +84,7 @@ const Ambulance = () => {
     try {
       const response = await axios.post(
         "http://localhost:3001/ambulances",
-        formData,
+        formData
       );
       setAmbulances([...ambulances, response.data]);
       setAddingAmbulance(false);
@@ -123,196 +108,197 @@ const Ambulance = () => {
 
   return (
     <div>
-        <AmbulanceBanner
+      <AmbulanceBanner
         imageUrl="../../public/photo_2024-05-25_15-44-18.jpg"
         title="Ambulance service"
         subtitle="We are ready for 24/h"
-        ></AmbulanceBanner>
-      <div>
-        <TextField
-          fullWidth
-          label="Search"
-          variant="outlined"
-          value={filter}
-          onChange={handleSearchChange}
-        />
-      </div>
-      <div>
-        <Button
-          onClick={() => {
-            setAddingAmbulance(true);
-            setEditingAmbulance(null);
-          }}
-          variant="contained"
-          color="primary"
-          className="my-4"
-        >
-          Add Info
-        </Button>
-      </div>
-      <TableContainer component={Paper} className="my-4">
-        <Table aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell>Address</TableCell>
-              <TableCell>Ambulance Title</TableCell>
-              <TableCell>Ambulance Number</TableCell>
-              <TableCell>ICU Service</TableCell>
-              <TableCell>Contact Info</TableCell>
-              <TableCell>City</TableCell>
-              <TableCell>Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {ambulances
-              .filter(
-                (ambulance) =>
-                  ambulance.name.toLowerCase().includes(filter.toLowerCase()) ||
-                  ambulance.address.toLowerCase().includes(filter.toLowerCase()) ||
-                  ambulance.ambulanceTitle.toLowerCase().includes(filter.toLowerCase()) ||
-                  ambulance.ambulanceNumber.toLowerCase().includes(filter.toLowerCase()) ||
-                  ambulance.contactInfo.toLowerCase().includes(filter.toLowerCase()) ||
-                  ambulance.city.toLowerCase().includes(filter.toLowerCase())
-              )
-              .map((ambulance) => (
-                <TableRow key={ambulance._id}>
-                  <TableCell>{ambulance.name}</TableCell>
-                  <TableCell>{ambulance.address}</TableCell>
-                  <TableCell>{ambulance.ambulanceTitle}</TableCell>
-                  <TableCell>{ambulance.ambulanceNumber}</TableCell>
-                  <TableCell>{ambulance.icuService ? "Yes" : "No"}</TableCell>
-                  <TableCell>{ambulance.contactInfo}</TableCell>
-                  <TableCell>{ambulance.city}</TableCell>
-                  <TableCell>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={() => handleEditClick(ambulance)}
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      onClick={() => handleDeleteClick(ambulance._id)}
-                      className="ml-2"
-                    >
-                      Delete
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      ></AmbulanceBanner>
+      <div className="px-32">
+        <div>
+          <input
+            placeholder="Search"
+            value={filter}
+            onChange={handleSearchChange}
+            className="w-full input input-bordered input-lg rounded-xl my-10"
+          />
+        </div>
+        <div>
+          <button
+            onClick={() => {
+              setAddingAmbulance(true);
+              setEditingAmbulance(null);
+            }}
+            className="btn btn-primary my-4 text-secondary"
+          >
+            <Add />
+            Add Ambulance
+          </button>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="table w-full table-lg table-zebra">
+            <thead className="bg-primary text-secondary">
+              <tr>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Ambulance Title</th>
+                <th>Ambulance Number</th>
+                <th>ICU Service</th>
+                <th>Contact Info</th>
+                <th>City</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {ambulances
+                .filter(
+                  (ambulance) =>
+                    ambulance.name
+                      .toLowerCase()
+                      .includes(filter.toLowerCase()) ||
+                    ambulance.address
+                      .toLowerCase()
+                      .includes(filter.toLowerCase()) ||
+                    ambulance.ambulanceTitle
+                      .toLowerCase()
+                      .includes(filter.toLowerCase()) ||
+                    ambulance.ambulanceNumber
+                      .toLowerCase()
+                      .includes(filter.toLowerCase()) ||
+                    ambulance.contactInfo
+                      .toLowerCase()
+                      .includes(filter.toLowerCase()) ||
+                    ambulance.city.toLowerCase().includes(filter.toLowerCase())
+                )
+                .map((ambulance) => (
+                  <tr key={ambulance._id}>
+                    <td>{ambulance.name}</td>
+                    <td>{ambulance.address}</td>
+                    <td>{ambulance.ambulanceTitle}</td>
+                    <td>{ambulance.ambulanceNumber}</td>
+                    <td>{ambulance.icuService ? "Yes" : "No"}</td>
+                    <td>{ambulance.contactInfo}</td>
+                    <td>{ambulance.city}</td>
+                    <td className="flex">
+                      <button
+                        className="btn btn-primary btn-circle"
+                        onClick={() => handleEditClick(ambulance)}
+                      >
+                        <Edit />
+                      </button>
+                      <button
+                        className="btn btn-error ml-2 btn-circle"
+                        onClick={() => handleDeleteClick(ambulance._id)}
+                      >
+                        <Delete />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        </div>
 
-      <Modal
-        open={addingAmbulance}
-        onClose={() => setAddingAmbulance(false)}
-        aria-labelledby="add-ambulance-modal-title"
-        aria-describedby="add-ambulance-modal-description"
-      >
-        <div className="modal-container bg-slate-600">
-          <div className="modal-content">
-            <h2 id="add-ambulance-modal-title">Add New Ambulance</h2>
-            <form onSubmit={editingAmbulance ? handleUpdateSubmit : handleAddAmbulanceSubmit}>
-              <TextField
-                label="Name"
-                variant="outlined"
-                fullWidth
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                className="mb-2"
-              />
-              <TextField
-                label="Address"
-                variant="outlined"
-                fullWidth
-                name="address"
-                value={formData.address}
-                onChange={handleChange}
-                className="mb-2"
-              />
-              <TextField
-                label="Ambulance Title"
-                variant="outlined"
-                fullWidth
-                name="ambulanceTitle"
-                value={formData.ambulanceTitle}
-                onChange={handleChange}
-                className="mb-2"
-              />
-              <TextField
-               
-               label="Ambulance Number"
-               variant="outlined"
-               fullWidth
-               name="ambulanceNumber"
-               value={formData.ambulanceNumber}
-               onChange={handleChange}
-               className="mb-2"
-             />
-             <FormControl fullWidth className="mb-2">
-               <InputLabel id="icuService-label">ICU Service</InputLabel>
-               <Select
-                 labelId="icuService-label"
-                 id="icuService"
-                 value={formData.icuService}
-                 onChange={handleChange}
-                 name="icuService"
-               >
-                 <MenuItem value={true}>Yes</MenuItem>
-                 <MenuItem value={false}>No</MenuItem>
-               </Select>
-             </FormControl>
-             <TextField
-               label="Contact Info"
-               variant="outlined"
-               fullWidth
-               name="contactInfo"
-               value={formData.contactInfo}
-               onChange={handleChange}
-               className="mb-2"
-             />
-             <TextField
-               label="City"
-               variant="outlined"
-               fullWidth
-               name="city"
-               value={formData.city}
-               onChange={handleChange}
-               className="mb-2"
-             />
-             <Button type="submit" variant="contained" color="primary" className="mb-2">
-               {editingAmbulance ? "Update Ambulance" : "Add Ambulance"}
-             </Button>
-             <Button
-               onClick={() => {
-                 setAddingAmbulance(false);
-                 setFormData({
-                   name: "",
-                   address: "",
-                   ambulanceTitle: "",
-                   ambulanceNumber: "",
-                   icuService: false,
-                   contactInfo: "",
-                   city: "",
-                 });
-               }}
-               variant="contained"
-               color="secondary"
-               className="mb-2 ml-2"
-             >
-               Cancel
-             </Button>
-           </form>
-         </div>
-       </div>
-     </Modal>
-   </div>
- );
+        {addingAmbulance && (
+          <div className="modal modal-open">
+            <div className="modal-box">
+              <h2 className="font-bold text-lg">
+                {editingAmbulance ? "Edit Ambulance" : "Add New Ambulance"}
+              </h2>
+              <form
+                className="flex flex-col gap-3 p-3"
+                onSubmit={
+                  editingAmbulance
+                    ? handleUpdateSubmit
+                    : handleAddAmbulanceSubmit
+                }
+              >
+                <input
+                  type="text"
+                  placeholder="Name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  className="input input-bordered w-full mb-2"
+                />
+                <input
+                  type="text"
+                  placeholder="Address"
+                  name="address"
+                  value={formData.address}
+                  onChange={handleChange}
+                  className="input input-bordered w-full mb-2"
+                />
+                <input
+                  type="text"
+                  placeholder="Ambulance Title"
+                  name="ambulanceTitle"
+                  value={formData.ambulanceTitle}
+                  onChange={handleChange}
+                  className="input input-bordered w-full mb-2"
+                />
+                <input
+                  type="text"
+                  placeholder="Ambulance Number"
+                  name="ambulanceNumber"
+                  value={formData.ambulanceNumber}
+                  onChange={handleChange}
+                  className="input input-bordered w-full mb-2"
+                />
+                <select
+                  name="icuService"
+                  value={formData.icuService}
+                  onChange={handleChange}
+                  className="select select-bordered w-full mb-2"
+                >
+                  <option value={false}>No ICU Service</option>
+                  <option value={true}>ICU Service</option>
+                </select>
+                <input
+                  type="text"
+                  placeholder="Contact Info"
+                  name="contactInfo"
+                  value={formData.contactInfo}
+                  onChange={handleChange}
+                  className="input input-bordered w-full mb-2"
+                />
+                <input
+                  type="text"
+                  placeholder="City"
+                  name="city"
+                  value={formData.city}
+                  onChange={handleChange}
+                  className="input input-bordered w-full mb-2"
+                />
+                <div className="flex justify-end">
+                  <button type="submit" className="btn btn-primary mb-2">
+                    {editingAmbulance ? "Update Ambulance" : "Add Ambulance"}
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-error mb-2 ml-2"
+                    onClick={() => {
+                      setAddingAmbulance(false);
+                      setFormData({
+                        name: "",
+                        address: "",
+                        ambulanceTitle: "",
+                        ambulanceNumber: "",
+                        icuService: false,
+                        contactInfo: "",
+                        city: "",
+                      });
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default Ambulance;

@@ -5,9 +5,11 @@ import axios from "axios";
 import {
   Add,
   CalendarMonth,
+  Inventory,
   LogoutOutlined,
   Medication,
   PeopleAlt,
+  WaterDrop,
 } from "@mui/icons-material";
 import Logout from "../components/Logout";
 import AllAppointments from "../components/AllAppointments";
@@ -15,6 +17,8 @@ import AddDoctor from "../components/AddDoctor";
 import AllDoctors from "../components/AllDoctors";
 import Allusers from "../components/Allusers";
 import DashboardNav from "../components/DashboardNav";
+import BloodInventory from "./BloodInventory";
+import BloodDonorList from "./BloodDonorList";
 
 const Dashboard = () => {
   const [success, setSuccess] = useState(false); // Initialize success state
@@ -57,6 +61,10 @@ const Dashboard = () => {
         return <AllAppointments />;
       case "AllUsers":
         return <Allusers />;
+      case "BloodInventory":
+        return <BloodInventory />;
+      case "BloodDonorList":
+        return <BloodDonorList />;
       default:
         return (
           <div className="h-[90vh] flex items-center justify-center text-6xl px-10 text-center font-bold capitalize">
@@ -99,6 +107,18 @@ const Dashboard = () => {
               className="flex gap-2 hover:bg-secondary hover:text-primary transition-all duration-300 ease-in-out px-2 py-3"
             >
               <PeopleAlt /> All Users
+            </button>
+            <button
+              onClick={() => handleNavigation("BloodInventory")}
+              className="flex gap-2 hover:bg-secondary hover:text-primary transition-all duration-300 ease-in-out px-2 py-3"
+            >
+              <Inventory /> Blood Inventory
+            </button>
+            <button
+              onClick={() => handleNavigation("BloodDonorList")}
+              className="flex gap-2 hover:bg-secondary hover:text-primary transition-all duration-300 ease-in-out px-2 py-3"
+            >
+              <WaterDrop /> Blood Donor List
             </button>
           </div>
         </div>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useLogin } from "../context/LoginContext"; // Import useLogin to access user context
+import { Inventory, LocationOn, WaterDrop } from "@mui/icons-material";
 
 const BloodRequest = () => {
   const { user } = useLogin();
@@ -100,8 +101,8 @@ const BloodRequest = () => {
   };
 
   return (
-    <div>
-      <h2>Blood Requests</h2>
+    <div className="p-8">
+      <h1 className="text-2xl font-bold mb-10 mt-5">Blood Requests</h1>
       <button
         type="button"
         onClick={() =>
@@ -116,15 +117,18 @@ const BloodRequest = () => {
         id="createRequestModal"
         className="modal modal-bottom sm:modal-middle"
       >
-        <div className="modal-box bg-primary p-10 rounded-xl my-10">
+        <div className="modal-box p-10 rounded-xl my-10">
           <form method="dialog">
             <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
               ✕
             </button>
           </form>
           <div>
-            <h2 className="text-white text-2xl mb-5">Create Blood Request</h2>
-            <form onSubmit={handleSubmit}>
+            <h2 className="text-xl mb-5 font-bold">Create Blood Request</h2>
+            <form
+              onSubmit={handleSubmit}
+              className="grid grid-cols-2 flex-col gap-3"
+            >
               <input
                 type="text"
                 name="bloodGroup"
@@ -132,7 +136,7 @@ const BloodRequest = () => {
                 onChange={handleChange}
                 placeholder="Blood Group"
                 required
-                className="form-control input mb-3"
+                className="form-control input input-bordered"
               />
               <input
                 type="number"
@@ -140,7 +144,7 @@ const BloodRequest = () => {
                 value={newRequest.quantity}
                 onChange={handleChange}
                 placeholder="Quantity"
-                className="form-control input mb-3"
+                className="form-control input input-bordered"
               />
               <input
                 type="text"
@@ -149,7 +153,7 @@ const BloodRequest = () => {
                 onChange={handleChange}
                 placeholder="Urgency"
                 required
-                className="form-control input mb-3"
+                className="form-control input input-bordered"
               />
               <input
                 type="text"
@@ -157,7 +161,7 @@ const BloodRequest = () => {
                 value={newRequest.country}
                 onChange={handleChange}
                 placeholder="Country"
-                className="form-control input mb-3"
+                className="form-control input input-bordered"
               />
               <input
                 type="text"
@@ -165,7 +169,7 @@ const BloodRequest = () => {
                 value={newRequest.division}
                 onChange={handleChange}
                 placeholder="Division"
-                className="form-control input mb-3"
+                className="form-control input input-bordered"
               />
               <input
                 type="text"
@@ -173,7 +177,7 @@ const BloodRequest = () => {
                 value={newRequest.district}
                 onChange={handleChange}
                 placeholder="District"
-                className="form-control input mb-3"
+                className="form-control input input-bordered"
               />
               <input
                 type="text"
@@ -181,7 +185,7 @@ const BloodRequest = () => {
                 value={newRequest.city}
                 onChange={handleChange}
                 placeholder="City"
-                className="form-control input mb-3"
+                className="form-control input input-bordered"
               />
               <input
                 type="text"
@@ -190,7 +194,7 @@ const BloodRequest = () => {
                 onChange={handleChange}
                 placeholder="Contact Info"
                 required
-                className="form-control input mb-3"
+                className="form-control input input-bordered"
               />
               <textarea
                 name="caption"
@@ -198,9 +202,12 @@ const BloodRequest = () => {
                 onChange={handleChange}
                 placeholder="Caption"
                 required
-                className="form-control input mb-3"
+                className="form-control input input-bordered col-span-2 resize-none h-20"
               />
-              <button type="submit" className="btn btn-success">
+              <button
+                type="submit"
+                className="btn btn-success text-secondary col-span-2"
+              >
                 Post Request
               </button>
             </form>
@@ -208,20 +215,40 @@ const BloodRequest = () => {
         </div>
       </dialog>
 
-      <h3>All Blood Requests</h3>
-      <ul>
+      <h1 className="text-2xl font-bold my-10"> AllBlood Requests</h1>
+
+      <div className="flex flex-col gap-8">
         {requests.map((request) => (
-          <li key={request._id}>
-            <p>
-              {request.userId ? request.userId.name : "Unknown User"}:{" "}
-              {request.bloodGroup} - {request.quantity} units
-            </p>
-            <p>Urgency: {request.urgency}</p>
-            <p>
-              Location: {request.city}, {request.district}, {request.division}
-            </p>
-            <p>Contact: {request.contactInfo}</p>
-            <p>Caption: {request.caption}</p>
+          <div
+            key={request._id}
+            style={{ boxShadow: "0 1px 10px rgb(0,0,0,.3)" }}
+            className="p-6 bg-white rounded-xl"
+          >
+            <div className="mb-5">
+              <h1 className="font-bold text-2xl mb-3 text-gray-800">
+                {request.userId ? request.userId.name : "Unknown User"}
+              </h1>
+              <h2 className="flex items-center text-xl mb-2 text-gray-700">
+                <WaterDrop className="text-red-500 mr-2" /> {request.bloodGroup}{" "}
+                - {request.quantity} units
+              </h2>
+              <p className="text-gray-600 mb-1">
+                <span className="font-semibold">Urgency:</span>{" "}
+                {request.urgency}
+              </p>
+              <p className="text-gray-600 mb-1">
+                <span className="font-semibold">Location:</span> {request.city},{" "}
+                {request.district}, {request.division}
+              </p>
+              <p className="text-gray-600 mb-1">
+                <span className="font-semibold">Contact:</span>{" "}
+                {request.contactInfo}
+              </p>
+              <p className="text-gray-600">
+                <span className="font-semibold">Message:</span>{" "}
+                {request.caption}
+              </p>
+            </div>
             <button
               type="button"
               className="btn btn-primary"
@@ -232,7 +259,7 @@ const BloodRequest = () => {
                   .showModal();
               }}
             >
-              View/Add Comments
+              Comment
             </button>
 
             <dialog id={`commentModal-${request._id}`} className="modal">
@@ -243,38 +270,45 @@ const BloodRequest = () => {
                   </button>
                 </form>
                 <div>
-                  <h3>Comments</h3>
-                  <ul>
+                  <h3 className="text-lg font-semibold mb-4">Comments</h3>
+                  <ul className="mb-4">
                     {request.comments.map((comment) => (
-                      <li key={comment._id}>
-                        <p>
-                          {comment.userId
-                            ? comment.userId.name
-                            : "Unknown User"}
-                          : {comment.comment}
+                      <li
+                        key={comment._id}
+                        className="p-2 mb-3 rounded-xl"
+                        style={{ boxShadow: "0 1px 10px rgb(0,0,0,.3)" }}
+                      >
+                        <p className="text-gray-700">
+                          <span className="font-semibold">
+                            {comment.userId
+                              ? comment.userId.name
+                              : "Unknown User"}
+                            :
+                          </span>{" "}
+                          {comment.comment}
                         </p>
                       </li>
                     ))}
                   </ul>
-                  <form onSubmit={handleCommentSubmit}>
+                  <form onSubmit={handleCommentSubmit} className="space-y-3">
                     <input
                       type="text"
                       value={newComment}
                       onChange={handleCommentChange}
                       placeholder="Your comment"
                       required
-                      className="form-control input mb-3"
+                      className="form-control input input-bordered w-full"
                     />
-                    <button type="submit" className="btn btn-success">
+                    <button type="submit" className="btn btn-success w-full">
                       Submit
                     </button>
                   </form>
                 </div>
               </div>
             </dialog>
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };

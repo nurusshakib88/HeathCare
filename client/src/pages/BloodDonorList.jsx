@@ -13,6 +13,7 @@ import {
   Button,
 } from "@mui/material";
 import { useLogin } from "../context/LoginContext";
+import { Delete, Edit } from "@mui/icons-material";
 
 const BloodDonorList = () => {
   const [donors, setDonors] = useState([]);
@@ -70,12 +71,12 @@ const BloodDonorList = () => {
     try {
       const response = await axios.put(
         `http://localhost:3001/donors/${editingDonor._id}`,
-        formData,
+        formData
       );
       setDonors(
         donors.map((donor) =>
-          donor._id === editingDonor._id ? response.data : donor,
-        ),
+          donor._id === editingDonor._id ? response.data : donor
+        )
       );
       setEditingDonor(null);
     } catch (error) {
@@ -88,7 +89,7 @@ const BloodDonorList = () => {
     try {
       const response = await axios.post(
         "http://localhost:3001/donors/add",
-        formData,
+        formData
       );
       setDonors([...donors, response.data]);
       setAddingDonor(false);
@@ -102,89 +103,81 @@ const BloodDonorList = () => {
       donor.name.toLowerCase().includes(filter.toLowerCase()) ||
       donor.address.toLowerCase().includes(filter.toLowerCase()) ||
       donor.bloodGroup.toLowerCase().includes(filter.toLowerCase()) ||
-      donor.contactInfo.toLowerCase().includes(filter.toLowerCase()),
+      donor.contactInfo.toLowerCase().includes(filter.toLowerCase())
   );
 
   return (
-    <div className="px-32">
-      <h1 className="text-2xl font-bold mb-4">Donors</h1>
+    <div className="px-8">
+      <h1 className="text-2xl font-bold mb-4">Blood Donors</h1>
       <Grid container spacing={2} alignItems="center">
         <Grid item xs={12} sm={6}>
-          <TextField
-            fullWidth
-            label="Filter Donors"
-            variant="outlined"
+          <input
+            placeholder="Filter Donors"
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
+            className="input input-bordered w-full input-lg rounded-2xl mb-10"
           />
         </Grid>
       </Grid>
-      <TableContainer component={Paper} className="my-4">
-        <Table aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell>Address</TableCell>
-              <TableCell>Blood Group</TableCell>
-              <TableCell>Contact Info</TableCell>
-
-              {user?.role === "admin" && (
-                <>
-                  <TableCell>Actions</TableCell>
-                </>
-              )}
-            </TableRow>
-          </TableHead>
-          <TableBody>
+      <div className="overflow-x-auto">
+        <table className="table w-full table-lg table-zebra rounded-xl overflow-hidden">
+          <thead>
+            <tr className="bg-primary text-secondary">
+              <th>Name</th>
+              <th>Address</th>
+              <th>Blood Group</th>
+              <th>Contact Info</th>
+              {user?.role === "admin" && <th>Actions</th>}
+            </tr>
+          </thead>
+          <tbody>
             {filteredDonors.length > 0 ? (
               filteredDonors.map((donor) => (
-                <TableRow key={donor._id}>
-                  <TableCell>{donor.name}</TableCell>
-                  <TableCell>{donor.address}</TableCell>
-                  <TableCell>{donor.bloodGroup}</TableCell>
-                  <TableCell>{donor.contactInfo}</TableCell>
-                  <TableCell>
-                    {user?.role === "admin" && (
-                      <>
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          onClick={() => handleEditClick(donor)}
-                        >
-                          Edit
-                        </Button>
-                        <Button
-                          variant="contained"
-                          color="secondary"
-                          onClick={() => handleDeleteClick(donor._id)}
-                          className="ml-2"
-                        >
-                          Delete
-                        </Button>
-                      </>
-                    )}
-                  </TableCell>
-                </TableRow>
+                <tr key={donor._id}>
+                  <td className="border">{donor.name}</td>
+                  <td className="border">{donor.address}</td>
+                  <td className="border">{donor.bloodGroup}</td>
+                  <td className="border">{donor.contactInfo}</td>
+                  {user?.role === "admin" && (
+                    <td className="border">
+                      <button
+                        onClick={() => handleEditClick(donor)}
+                        className="btn btn-circle btn-primary text-secondary me-3"
+                      >
+                        <Edit />
+                      </button>
+                      <button
+                        onClick={() => handleDeleteClick(donor._id)}
+                        className="btn btn-circle btn-error text-secondary"
+                      >
+                        <Delete />
+                      </button>
+                    </td>
+                  )}
+                </tr>
               ))
             ) : (
-              <TableRow>
-                <TableCell colSpan={5}>No donors available</TableCell>
-              </TableRow>
+              <tr>
+                <td className="border" colSpan={5}>
+                  No donors available
+                </td>
+              </tr>
             )}
-          </TableBody>
-        </Table>
-      </TableContainer>
+          </tbody>
+        </table>
+      </div>
+
       <div>
         <button
           onClick={() => setAddingDonor(true)}
-          className="my-4 btn btn-primary"
+          className="my-4 btn btn-primary text-secondary"
         >
           Become a Donor
         </button>
       </div>
 
       {addingDonor && (
-        <div className="inmodal">
+        <div className="inmodal z-50">
           <div className="inmodal-box">
             <h2 className="text-xl font-bold">Became A Donor</h2>
             <form onSubmit={handleAddDonorSubmit}>
@@ -232,13 +225,13 @@ const BloodDonorList = () => {
 
               <button
                 type="submit"
-                className="mt-2 px-4 py-2 btn btn-primary text-white rounded"
+                className="mt-2 px-4 py-2 btn btn-primary text-white rounded-xl me-3"
               >
                 Add Donor
               </button>
               <button
                 onClick={() => setAddingDonor(false)}
-                className="ml-2 px-4 py-2 bg-gray-500 text-white rounded"
+                className="mt-2 px-4 py-2 btn btn-error text-white rounded-xl"
               >
                 Cancel
               </button>
