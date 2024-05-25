@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useLogin } from "../context/LoginContext"; // Import useLogin to access user context
 
 const BloodRequest = () => {
+  const { user } = useLogin();
   const [requests, setRequests] = useState([]);
   const [newRequest, setNewRequest] = useState({
     bloodGroup: "",
@@ -35,7 +37,10 @@ const BloodRequest = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:3001/blood-requests/create", newRequest)
+      .post("http://localhost:3001/blood-requests/create", {
+        ...newRequest,
+        userId: user._id // Include the user ID when creating a blood request
+      })
       .then((response) => {
         setRequests([response.data, ...requests]);
         setNewRequest({
@@ -65,6 +70,7 @@ const BloodRequest = () => {
     axios
       .post("http://localhost:3001/blood-requests/comment", {
         requestId: selectedRequestId,
+        userId: user._id, // Include the user ID when adding a comment
         comment: newComment,
       })
       .then((response) => {
@@ -200,7 +206,7 @@ const BloodRequest = () => {
         {requests.map((request) => (
           <li key={request._id}>
             <p>
-              {request.bloodGroup} - {request.quantity} units
+              {request.userId ? request.userId.name : "Unknown User"}: {request.bloodGroup} - {request.quantity} units
             </p>
             <p>Urgency: {request.urgency}</p>
             <p>
@@ -236,28 +242,30 @@ const BloodRequest = () => {
                   <form onSubmit={handleCommentSubmit}>
                     <input
                       type="text"
-                      name="comment"
                       value={newComment}
                       onChange={handleCommentChange}
                       placeholder="Your comment"
                       required
                       className="form-control input mb-3"
                     />
-                    <button type="submit" className="btn btn-primary">
-                      Post Comment
+                    <button type="submit" className="btn btn-success">
+                      Submit
                     </button>
                   </form>
-                  <h4>Comments</h4>
-                  <ul>
-                    {request.comments.map((comment) => (
-                      <li key={comment._id}>
-                        <p>{comment.comment}</p>
-                      </li>
-                    ))}
-                  </ul>
                 </div>
               </div>
             </dialog>
+
+            <h4>Comments</h4>
+            <ul>
+              {request.comments.map((comment) => (
+                <li key={comment._id}>
+                  <p>
+                    {comment.userId ? comment.userId.name : "Unknown User"}: {comment.comment}
+                  </p>
+                </li>
+              ))}
+            </ul>
           </li>
         ))}
       </ul>
