@@ -23,6 +23,8 @@ import BloodInventory from "./pages/BloodInventory";
 import BloodDonorList from "./pages/BloodDonorList";
 import BloodRequest from "./pages/BloodRequest";
 import Ambulance from "./pages/Ambulance";
+import ChatBot from "./components/ChatBot";
+import { useEffect } from "react";
 
 const App = () => {
   const { isLoggedIn } = useLogin();
@@ -32,11 +34,23 @@ const App = () => {
   const isDashboard = location.pathname === "/dashboard";
   const isBloodBank = location.pathname === "/blood-bank";
 
+  const ScrollToTop = () => {
+    const { pathname } = useLocation();
+
+    useEffect(() => {
+      window.scrollTo(0, 0);
+    }, [pathname]);
+
+    return null;
+  };
+
   return (
     <>
+      <ScrollToTop />
       {!isDashboard && !isBloodBank && <Navbar />}
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/chat" element={<ChatBot />} />
         <Route path="/" element={<Home />} />
         <Route path="/ambulance" element={<Ambulance></Ambulance>} />
         <Route path="/make-an-appointment" element={<MakeAnAppointment />} />

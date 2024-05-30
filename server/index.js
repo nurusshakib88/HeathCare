@@ -18,7 +18,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: ["http://import.meta.env.REACT_APP_API:5173"],
+    origin: process.env.ReactUrl,
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
