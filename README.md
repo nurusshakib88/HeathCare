@@ -1,6 +1,9 @@
-# Shushastho
+![image](https://github.com/nurusshakib88/HeathCare/assets/84782668/8afd0eca-3ff2-4b93-8331-18b60e58f602)# Shushastho
 
 Shushastho is a medical web application designed to provide users with comprehensive healthcare solutions. It offers various features such as appointment scheduling, medical record management, and telemedicine services to enhance the accessibility and efficiency of healthcare.
+
+![image](https://github.com/nurusshakib88/HeathCare/assets/84782668/1cf11125-bd80-4227-a27f-aeef62959a51)
+
 
 ## Features
 
@@ -44,5 +47,5 @@ Follow these instructions to set up and run the project on your local machine.
 
 ### Environment Variables
 
-Update the environment variables for both the server and client. In the `.env` file in both the `server` and `client` directories and add the necessary variables. Here is an example:
+Update the environment variables for both the server and client. In the `.env` file in both the `server` and `client` directories and add the necessary variables.
 
