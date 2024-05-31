@@ -1,4 +1,4 @@
-![image](https://github.com/nurusshakib88/HeathCare/assets/84782668/8afd0eca-3ff2-4b93-8331-18b60e58f602)# Shushastho
+<h1 style={text-align: "center";}>Shushastho</h1>
 
 Shushastho is a medical web application designed to provide users with comprehensive healthcare solutions. It offers various features such as appointment scheduling, medical record management, and telemedicine services to enhance the accessibility and efficiency of healthcare.
 
