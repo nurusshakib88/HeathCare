@@ -4,13 +4,14 @@ import { Typography } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useLogin } from "../context/LoginContext";
-import { Inventory, LocationOn, WaterDrop } from "@mui/icons-material";
+import { Add, Inventory, LocationOn, WaterDrop } from "@mui/icons-material";
 
 const BloodInventory = () => {
   const { user } = useLogin(); // Get the current user from the context
   const [inventory, setInventory] = useState([]);
   const [filteredInventory, setFilteredInventory] = useState([]);
   const [editingItem, setEditingItem] = useState(null);
+  const [addingItem, setAddingItem] = useState(false); // New state for adding item
   const [formData, setFormData] = useState({
     bloodGroup: "",
     quantity: "",
@@ -20,7 +21,6 @@ const BloodInventory = () => {
     division: "",
   });
   const [filter, setFilter] = useState("");
-  // const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
     const fetchInventory = async () => {
@@ -40,9 +40,20 @@ const BloodInventory = () => {
     filterInventory();
   }, [filter, inventory]);
 
+  const handleAddClick = () => {
+    setAddingItem(true);
+    setFormData({
+      bloodGroup: "",
+      quantity: "",
+      country: "",
+      city: "",
+      district: "",
+      division: "",
+    });
+  };
+
   const handleEditClick = (item) => {
     setEditingItem(item);
-    // setOpenModal(true);
     setFormData({
       bloodGroup: item.bloodGroup,
       quantity: item.quantity,
@@ -85,9 +96,23 @@ const BloodInventory = () => {
       setInventory(updatedInventory);
       setFilteredInventory(updatedInventory);
       setEditingItem(null);
-      // setOpenModal(false);
     } catch (error) {
       console.error("Error updating inventory:", error);
+    }
+  };
+
+  const handleAddSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        `/api/blood-inventory/inventory`,
+        formData
+      );
+      setInventory([...inventory, response.data]);
+      setFilteredInventory([...inventory, response.data]);
+      setAddingItem(false);
+    } catch (error) {
+      console.error("Error adding inventory:", error);
     }
   };
 
@@ -114,6 +139,14 @@ const BloodInventory = () => {
         onChange={handleFilterChange}
         className="input input-bordered w-full input-lg mb-10 rounded-xl"
       />
+      {user?.role === "admin" && (
+        <button
+          onClick={handleAddClick}
+          className="btn btn-primary btn-wide text-secondary mb-5"
+        >
+          <Add /> Add Inventory
+        </button>
+      )}
       <div className="grid grid-cols-3 gap-5" spacing={3}>
         {filteredInventory.length > 0 ? (
           filteredInventory.map((item) => (
@@ -133,7 +166,7 @@ const BloodInventory = () => {
               </div>
               <div className="col-span-2">
                 <p className="flex gap-3 mb-2">
-                  <LocationOn /> {item.city}, {item.district}, {item.division},
+                  <LocationOn /> {item.city}, {item.district}, {item.division},{" "}
                   {item.country}
                 </p>
                 <h3 className="mb-2 flex gap-3 text-xl font-medium">
@@ -162,11 +195,13 @@ const BloodInventory = () => {
           <Typography>No blood inventory available</Typography>
         )}
       </div>
-      {editingItem && (
+      {(editingItem || addingItem) && (
         <div className="inmodal z-50">
           <div className="inmodal-box">
-            <h2 className="text-xl font-bold">Edit Inventory</h2>
-            <form onSubmit={handleUpdateSubmit}>
+            <h2 className="text-xl font-bold">
+              {editingItem ? "Edit Inventory" : "Add Inventory"}
+            </h2>
+            <form onSubmit={editingItem ? handleUpdateSubmit : handleAddSubmit}>
               <div className="mb-2">
                 <label className="block">Blood Group</label>
                 <input
@@ -231,10 +266,13 @@ const BloodInventory = () => {
                 type="submit"
                 className="mt-2 px-4 py-2 bg-green-500 text-white rounded"
               >
-                Update
+                {editingItem ? "Update" : "Add"}
               </button>
               <button
-                onClick={() => setEditingItem(null)}
+                onClick={() => {
+                  setEditingItem(null);
+                  setAddingItem(false);
+                }}
                 className="ml-2 px-4 py-2 bg-gray-500 text-white rounded"
               >
                 Cancel

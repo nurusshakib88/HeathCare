@@ -25,6 +25,7 @@ import BloodRequest from "./pages/BloodRequest";
 import Ambulance from "./pages/Ambulance";
 import ChatBot from "./components/ChatBot";
 import { useEffect } from "react";
+import Contact from "./pages/Contact";
 
 const App = () => {
   const { isLoggedIn } = useLogin();
@@ -59,6 +60,7 @@ const App = () => {
           <Route path="/profile" element={<UserProfile />} />
           <Route path="/appointments" element={<AppointmentList />} />
         </Route>
+        <Route path="/contact" element={<Contact />} />
         <Route path="/register" element={<Signup />} />
         <Route path="*" element={<Error />} />
         <Route path="/Blood" element={<BloodInventory />} />
