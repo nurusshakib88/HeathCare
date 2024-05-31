@@ -1,4 +1,4 @@
-<h1 style={text-align: "center";}>Shushastho</h1>
+#Shushastho
 
 Shushastho is a medical web application designed to provide users with comprehensive healthcare solutions. It offers various features such as appointment scheduling, medical record management, and telemedicine services to enhance the accessibility and efficiency of healthcare.
 
