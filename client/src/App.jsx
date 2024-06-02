@@ -9,6 +9,7 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
+import Chatbot from "./pages/Chatbot";
 
 import { ProtectedRoute } from "./protected/ProtectedRoutes";
 import UserProfile from "./pages/UserProfile";
@@ -23,10 +24,9 @@ import BloodInventory from "./pages/BloodInventory";
 import BloodDonorList from "./pages/BloodDonorList";
 import BloodRequest from "./pages/BloodRequest";
 import Ambulance from "./pages/Ambulance";
-import ChatBot from "./components/ChatBot";
 import { useEffect } from "react";
 import Contact from "./pages/Contact";
-import Chatbot from "./pages/Chatbot";
+import HealthTips from "./pages/HealthTips";
 
 const App = () => {
   const { isLoggedIn } = useLogin();
@@ -53,6 +53,7 @@ const App = () => {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/chat" element={<Chatbot />} />
+        <Route path="/health-tips" element={<HealthTips />} />
         <Route path="/" element={<Home />} />
         <Route path="/ambulance" element={<Ambulance></Ambulance>} />
         <Route path="/make-an-appointment" element={<MakeAnAppointment />} />

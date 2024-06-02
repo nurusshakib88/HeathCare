@@ -46,7 +46,7 @@ const Banner = () => {
               Book an Appointment
             </NavLink>
             <NavLink
-              to="/about"
+              to="/health-tips"
               className="btn btn-primary text-secondary btn-wide"
             >
               Learn More

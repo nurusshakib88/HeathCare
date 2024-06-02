@@ -7,9 +7,7 @@ const BloodBankNav = () => {
   const { isLoggedIn, user } = useLogin();
   return (
     <div className="navbar sticky top-0 z-40 h-[10vh] bg-base-100">
-      <div className="navbar-start">
-        
-      </div>
+      <div className="navbar-start"></div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1 font-medium">
           <li>
@@ -25,7 +23,13 @@ const BloodBankNav = () => {
             <NavLink to="/blood-bank">Blood Bank</NavLink>
           </li>
           <li>
+            <NavLink to="/health-tips">Heath Tips</NavLink>
+          </li>
+          <li>
             <NavLink to="/contact">Contact</NavLink>
+          </li>
+          <li>
+            <NavLink to="/chat">Chat</NavLink>
           </li>
         </ul>
       </div>

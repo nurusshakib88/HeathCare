@@ -1,5 +1,6 @@
 import React from "react";
 import DocPat from "../assets/doc-pat.jpg";
+import { NavLink } from "react-router-dom";
 
 const AboutUs = () => {
   return (
@@ -15,9 +16,12 @@ const AboutUs = () => {
           culpa cum excepturi veritatis, itaque consectetur blanditiis modi.
           Soluta. Lorem ipsum dolor sit amet consectetur adipisicing elit.
         </p>
-        <button className="btn btn-primary mt-5 text-secondary">
+        <NavLink
+          to="/health-tips"
+          className="btn btn-primary mt-5 text-secondary"
+        >
           Learn More
-        </button>
+        </NavLink>
       </div>
       <div>
         <img

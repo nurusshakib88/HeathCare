@@ -27,6 +27,9 @@ const Navbar = () => {
             <NavLink to="/blood-bank">Blood Bank</NavLink>
           </li>
           <li>
+            <NavLink to="/health-tips">Heath Tips</NavLink>
+          </li>
+          <li>
             <NavLink to="/contact">Contact</NavLink>
           </li>
           <li>
