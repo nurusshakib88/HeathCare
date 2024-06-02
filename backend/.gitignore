@@ -1,1 +1,15 @@
-venv
+# Python
+*.pyc
+*.pyo
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pyc
+*.pyo
+*.pyz
+*.pyw
+*.pyc
+
+# venv
+venv/
