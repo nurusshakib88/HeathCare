@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HealthCare ChatBot</title>
+  </head>
+  <body>
+    <h1>HealthCare ChatBot</h1>
+    <form action="/get_disease" method="post">
+      <label for="name">Your Name? </label>
+      <input type="text" id="name" name="name" /><br />
+      <label for="symptoms">Symptoms (comma-separated): </label>
+      <input type="text" id="symptoms" name="symptoms" /><br />
+      <label for="days">From how many days? </label>
+      <input type="number" id="days" name="days" />
+      <button type="submit">Submit</button>
+    </form>
+
+    <!-- Result Section -->
+    {% if response %}
+    <h1>HealthCare ChatBot Result</h1>
+    <p>Hello, {{ response.name }}</p>
+    <p>Symptoms you are experiencing:</p>
+    <ul>
+      {% for symptom, answer in response.symptom_details.items() %}
+      <li>{{ symptom }}: {{ answer }}</li>
+      {% endfor %}
+    </ul>
+    <p>From how many days: {{ response.days }}</p>
+    <p>It might not be that bad but you should take precautions.</p>
+    <p>You may have: {{ response.disease }}</p>
+    <p>{{ response.description }}</p>
+    <p>Take following measures:</p>
+    <ul>
+      {% for precaution in response.precautions %}
+      <li>{{ precaution }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+  </body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthCare ChatBot Result</title>
+</head>
+<body>
+    <h1>HealthCare ChatBot Result</h1>
+    <p>Hello, {{ response.name }}</p>
+    <p>Symptoms you are experiencing:</p>
+    <ul>
+        {% for symptom, answer in response.symptom_details.items() %}
+            <li>{{ symptom }}: {{ answer }}</li>
+        {% endfor %}
+    </ul>
+    <p>From how many days: {{ response.days }}</p>
+    <p>It might not be that bad but you should take precautions.</p>
+    <p>You may have: {{ response.disease }}</p>
+    <p>{{ response.description }}</p>
+    <p>Take following measures:</p>
+    <ul>
+        {% for precaution in response.precautions %}
+            <li>{{ precaution }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
