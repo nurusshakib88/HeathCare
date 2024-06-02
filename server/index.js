@@ -18,7 +18,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: ["http://localhost:5173"],
+    origin: process.env.ReactUrl,
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
@@ -38,7 +38,7 @@ app.use("/blood-inventory", BloodInventoryRoutes);
 app.use("/blood-requests", BloodRequestRoutes);
 app.use("/donors", DonorRoutes);
 app.use("/", BloodPostRoutes);
-app.use('/ambulances', AmbulanceRoute);
+app.use("/ambulances", AmbulanceRoute);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

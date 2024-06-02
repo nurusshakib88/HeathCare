@@ -1,0 +1,63 @@
+[
+    {
+      "id": 1,
+      "tip": "Drink plenty of water",
+      "description": "Staying hydrated is essential for maintaining bodily functions and overall health. Aim to drink at least 8 glasses of water a day.",
+      "image":"https://i.ibb.co/ggZRSm9/Plentyofwater.jpg"
+    },
+    {
+      "id": 2,
+      "tip": "Eat a balanced diet",
+      "description": "Include a variety of fruits, vegetables, whole grains, and lean proteins in your meals to ensure you get all necessary nutrients.",
+      "image":"https://i.ibb.co/b3mmdg0/Balanced-Diet.jpg"
+    },
+    {
+      "id": 3,
+      "tip": "Exercise regularly",
+      "description": "Engage in at least 30 minutes of moderate physical activity most days of the week to maintain physical fitness and mental well-being.",
+      "image":"https://i.ibb.co/QYZFHpT/Exercise-Resgularly.jpg"
+    },
+    {
+      "id": 4,
+      "tip": "Get enough sleep",
+      "description": "Aim for 7-9 hours of sleep each night to allow your body to rest and repair itself, improving cognitive function and mood.",
+      "image":"https://i.ibb.co/tChPpTV/Sleeping-Regulerly.jpg"
+    },
+    {
+      "id": 5,
+      "tip": "Manage stress",
+      "description": "Practice stress-reducing techniques such as meditation, deep breathing, or yoga to maintain mental and emotional health.",
+      "image":"https://i.ibb.co/T1Hd3yZ/Manage-Stress.png"
+    },
+    {
+      "id": 6,
+      "tip": "Avoid smoking and limit alcohol",
+      "description": "Smoking and excessive alcohol consumption can lead to various health issues. Quit smoking and drink alcohol in moderation.",
+      "image":"https://i.ibb.co/yBzwT0m/Avoid-Spoking.jpg"
+    },
+    {
+      "id": 7,
+      "tip": "Practice good hygiene",
+      "description": "Regular hand washing, dental care, and personal hygiene can prevent infections and promote overall health.",
+      "image":"https://i.ibb.co/5YFTGT7/Practice-good-hygiene.jpg"
+    },
+    {
+      "id": 8,
+      "tip": "Stay socially active",
+      "description": "Maintain social connections and engage in activities with friends and family to support mental health and emotional well-being.",
+      "image":"https://i.ibb.co/R6nKdF7/Stay-socially-active.jpg"
+    },
+    {
+      "id": 9,
+      "tip": "Get regular medical check-ups",
+      "description": "Schedule routine visits with your healthcare provider to monitor your health and catch potential issues early.",
+      "image":"https://i.ibb.co/f4RDRS1/Regular-Check.jpg"
+    },
+    {
+      "id": 10,
+      "tip": "Maintain a healthy weight",
+      "description": "Achieve and maintain a healthy weight through a balanced diet and regular exercise to reduce the risk of chronic diseases.",
+      "image":"https://i.ibb.co/ZNDpQfw/weight.jpg"
+    }
+  ]
+  

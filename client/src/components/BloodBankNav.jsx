@@ -3,14 +3,12 @@ import { Link, NavLink } from "react-router-dom";
 import { useLogin } from "../context/LoginContext";
 import Logout from "./Logout";
 
-const Navbar = () => {
+const BloodBankNav = () => {
   const { isLoggedIn, user } = useLogin();
   return (
-    <div className="navbar sticky top-0 z-40 h-[10vh] bg-base-100 px-32">
+    <div className="navbar sticky top-0 z-40 h-[10vh] bg-base-100">
       <div className="navbar-start">
-        <NavLink to="/" className="text-2xl font-bold">
-          shushastho<span className="text-primary">.</span>
-        </NavLink>
+        
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1 font-medium">
@@ -28,9 +26,6 @@ const Navbar = () => {
           </li>
           <li>
             <NavLink to="/contact">Contact</NavLink>
-          </li>
-          <li>
-            <NavLink to="/chat">Chat</NavLink>
           </li>
         </ul>
       </div>
@@ -80,4 +75,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default BloodBankNav;

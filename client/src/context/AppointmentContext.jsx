@@ -14,7 +14,7 @@ export const AppointmentProvider = ({ children }) => {
   useEffect(() => {
     if (user) {
       axios
-        .get("http://localhost:3001/appointments/all")
+        .get(`/api/appointments/all`)
         .then((response) => {
           const userAppointments = response.data.filter(
             (appointment) => appointment.userId === user._id
@@ -30,9 +30,7 @@ export const AppointmentProvider = ({ children }) => {
 
   const fetchAppointments = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:3001/appointments/all"
-      );
+      const response = await axios.get(`/api/appointments/all`);
       setAllAppointments(response.data);
     } catch (error) {
       console.error("Error fetching appointments:", error);
@@ -41,7 +39,7 @@ export const AppointmentProvider = ({ children }) => {
 
   const handleDelete = (id) => {
     axios
-      .delete(`http://localhost:3001/appointments/deleteappointment/${id}`)
+      .delete(`/api/appointments/deleteappointment/${id}`)
       .then((res) => {
         console.log(res);
         setAppointments(
@@ -60,10 +58,7 @@ export const AppointmentProvider = ({ children }) => {
 
   const handleEdit = (id, updatedAppointment) => {
     axios
-      .put(
-        `http://localhost:3001/appointments/editappointment/${id}`,
-        updatedAppointment
-      )
+      .put(`/api/appointments/editappointment/${id}`, updatedAppointment)
       .then((res) => {
         console.log(res);
         setAppointments(

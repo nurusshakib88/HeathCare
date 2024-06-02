@@ -9,7 +9,7 @@ const Logout = ({ className, icon }) => {
 
   const handleLogout = () => {
     axios
-      .get("http://localhost:3001/logout", { withCredentials: true })
+      .get(`/api/logout`, { withCredentials: true })
       .then((response) => {
         console.log(response.data);
         setIsLoggedIn(false);

@@ -9,14 +9,14 @@ export const DoctorProvider = ({ children }) => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/doctors/all")
+      .get(`/api/doctors/all`)
       .then((response) => setDoctors(response.data))
       .catch((error) => console.error("Error fetching doctors:", error));
   }, [setDoctors]);
 
   const handleDelete = (id) => {
     axios
-      .delete(`http://localhost:3001/doctors/deletedoctor/${id}`)
+      .delete(`/api/doctors/deletedoctor/${id}`)
       .then((res) => {
         console.log(res);
         setDoctors(doctors.filter((doctor) => doctor._id !== id));

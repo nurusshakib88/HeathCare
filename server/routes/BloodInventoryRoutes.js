@@ -8,5 +8,4 @@ router.put('/inventory/:id', bloodInventoryController.updateBloodInventory);
 router.delete('/inventory/:id', bloodInventoryController.deleteBloodInventory);
 
 // Add more routes as needed (update, delete)
-
 module.exports = router;

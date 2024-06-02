@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Location from "../data/Location";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { CloudUpload } from "@mui/icons-material";
 
 const Signup = () => {
   const [name, setName] = useState("");
@@ -52,7 +53,7 @@ const Signup = () => {
       password,
     };
     try {
-      await axios.post("http://localhost:3001/register", formData);
+      await axios.post(`/api/register`, formData);
       navigate("/login");
     } catch (error) {
       console.log(error);
@@ -65,18 +66,15 @@ const Signup = () => {
     setImage(file);
     const data = new FormData();
     data.append("file", file);
-    data.append("upload_preset", "hospitalcloud");
-    data.append("cloud_name", "djtvum4xg");
+    data.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
+    data.append("cloud_name", import.meta.env.VITE_CLOUDINARY_CLOUD_NAME);
 
     try {
       setLoading(true);
-      const res = await fetch(
-        "https://api.cloudinary.com/v1_1/djtvum4xg/image/upload",
-        {
-          method: "POST",
-          body: data,
-        }
-      );
+      const res = await fetch(import.meta.env.VITE_CLOUDINARY_URL, {
+        method: "POST",
+        body: data,
+      });
       setLoading(false);
 
       const cloudData = await res.json();
@@ -206,20 +204,27 @@ const Signup = () => {
           />
         </div>
 
-        <label htmlFor="file-upload" className="cursor-pointer inline-block ">
+        <label
+          htmlFor="file-upload"
+          className="cursor-pointer inline-block border-2 border-dashed border-gray-400 p-8 text-center rounded-lg"
+        >
           {image ? (
             <img
-              className=" w-16 aspect-square rounded-full"
-              src={image ? URL.createObjectURL(image) : ""}
-              alt="img"
+              className="w-16 h-16 rounded-full object-cover mx-auto"
+              src={URL.createObjectURL(image)}
+              alt="Profile"
             />
           ) : (
-            "Select Profile Picture"
+            <>
+              <CloudUpload />
+              <br></br>
+              Upload Profile Picture
+            </>
           )}
         </label>
         <input
           id="file-upload"
-          className="hidden text-white"
+          className="hidden"
           type="file"
           onChange={handleImageChange}
         />

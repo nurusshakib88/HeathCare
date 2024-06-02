@@ -3,6 +3,7 @@ import axios from "axios";
 import Location from "../data/Location";
 import DoctorArea from "../data/DoctorArea";
 import { WeekDays, Times } from "../data/DateTime";
+import { CloudUpload } from "@mui/icons-material";
 
 const AddDoctor = () => {
   const [name, setName] = useState("");
@@ -62,7 +63,7 @@ const AddDoctor = () => {
       availability,
     };
     try {
-      await axios.post(`http://localhost:3001/doctors/add`, formData);
+      axios.post(`/api/doctors/add`, formData);
       window.location.reload();
     } catch (err) {
       console.log(err);
@@ -75,18 +76,15 @@ const AddDoctor = () => {
     setImage(file);
     const data = new FormData();
     data.append("file", file);
-    data.append("upload_preset", "hospitalcloud");
-    data.append("cloud_name", "djtvum4xg");
+    data.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
+    data.append("cloud_name", import.meta.env.VITE_CLOUDINARY_CLOUD_NAME);
 
     try {
       setLoading(true);
-      const res = await fetch(
-        "https://api.cloudinary.com/v1_1/djtvum4xg/image/upload",
-        {
-          method: "POST",
-          body: data,
-        }
-      );
+      const res = await fetch(import.meta.env.VITE_CLOUDINARY_URL, {
+        method: "POST",
+        body: data,
+      });
       setLoading(false);
 
       const cloudData = await res.json();
@@ -111,6 +109,7 @@ const AddDoctor = () => {
             placeholder="Doctor Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            required
             className="input input-bordered"
           />{" "}
           <input
@@ -118,6 +117,7 @@ const AddDoctor = () => {
             placeholder="Doctor degree"
             value={degree}
             onChange={(e) => setDegree(e.target.value)}
+            required
             className="input input-bordered"
           />
         </div>
@@ -130,6 +130,7 @@ const AddDoctor = () => {
               id="area"
               value={area}
               onChange={(e) => setArea(e.target.value)}
+              required
               className="input input-bordered"
             >
               <option value="">Select Area</option>
@@ -145,6 +146,7 @@ const AddDoctor = () => {
             placeholder="Doctor visit"
             value={visit}
             onChange={(e) => setVisit(e.target.value)}
+            required
             className="input input-bordered"
           />
         </div>
@@ -157,6 +159,7 @@ const AddDoctor = () => {
               id="division"
               value={selectedDivision}
               onChange={handleDivisionChange}
+              required
               className="input input-bordered w-full"
             >
               <option value="">Select Division</option>
@@ -178,6 +181,7 @@ const AddDoctor = () => {
               value={selectedDistrict}
               onChange={handleDistrictChange}
               disabled={!selectedDivision}
+              required
               className="input input-bordered w-full"
             >
               <option value="">Select District</option>
@@ -197,6 +201,7 @@ const AddDoctor = () => {
             <select
               id="availability"
               value={slot.day}
+              required
               onChange={(e) =>
                 handleAvailabilityChange(index, "day", e.target.value)
               }
@@ -216,6 +221,7 @@ const AddDoctor = () => {
               onChange={(e) =>
                 handleAvailabilityChange(index, "startTime", e.target.value)
               }
+              required
               className="input input-bordered"
             >
               <option value="">Start Time</option>
@@ -232,6 +238,7 @@ const AddDoctor = () => {
               onChange={(e) =>
                 handleAvailabilityChange(index, "endTime", e.target.value)
               }
+              required
               className="input input-bordered"
             >
               <option value="">End Time</option>
@@ -260,20 +267,28 @@ const AddDoctor = () => {
         </button>
         {/* availability */}
         {/* image  */}
-        <label htmlFor="file-upload" className="cursor-pointer inline-block ">
+        <label
+          htmlFor="file-upload"
+          className="input input-bordered border-dashed border-2 flex flex-col items-center
+          gap-2 h-max p-8 cursor-pointer"
+          style={{ borderSpacing: "10px" }}
+        >
           {image ? (
             <img
-              className=" w-20 rounded-full"
-              src={image ? URL.createObjectURL(image) : ""}
-              alt="img"
+              className="w-20 h-20 rounded-full object-cover mx-auto"
+              src={URL.createObjectURL(image)}
+              alt="Selected"
             />
           ) : (
-            "Select Image"
+            <>
+              <CloudUpload />
+              Select Doctor Image
+            </>
           )}
         </label>
         <input
           id="file-upload"
-          className="hidden text-white"
+          className="hidden"
           type="file"
           onChange={handleImageChange}
         />

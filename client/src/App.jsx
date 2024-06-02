@@ -9,6 +9,7 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
+import Chatbot from "./pages/Chatbot";
 
 import { ProtectedRoute } from "./protected/ProtectedRoutes";
 import UserProfile from "./pages/UserProfile";
@@ -23,6 +24,8 @@ import BloodInventory from "./pages/BloodInventory";
 import BloodDonorList from "./pages/BloodDonorList";
 import BloodRequest from "./pages/BloodRequest";
 import Ambulance from "./pages/Ambulance";
+import { useEffect } from "react";
+import Contact from "./pages/Contact";
 
 const App = () => {
   const { isLoggedIn } = useLogin();
@@ -32,11 +35,23 @@ const App = () => {
   const isDashboard = location.pathname === "/dashboard";
   const isBloodBank = location.pathname === "/blood-bank";
 
+  const ScrollToTop = () => {
+    const { pathname } = useLocation();
+
+    useEffect(() => {
+      window.scrollTo(0, 0);
+    }, [pathname]);
+
+    return null;
+  };
+
   return (
     <>
+      <ScrollToTop />
       {!isDashboard && !isBloodBank && <Navbar />}
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/chat" element={<Chatbot />} />
         <Route path="/" element={<Home />} />
         <Route path="/ambulance" element={<Ambulance></Ambulance>} />
         <Route path="/make-an-appointment" element={<MakeAnAppointment />} />
@@ -45,6 +60,7 @@ const App = () => {
           <Route path="/profile" element={<UserProfile />} />
           <Route path="/appointments" element={<AppointmentList />} />
         </Route>
+        <Route path="/contact" element={<Contact />} />
         <Route path="/register" element={<Signup />} />
         <Route path="*" element={<Error />} />
         <Route path="/Blood" element={<BloodInventory />} />
