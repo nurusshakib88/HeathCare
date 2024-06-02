@@ -26,6 +26,7 @@ import Ambulance from "./pages/Ambulance";
 import ChatBot from "./components/ChatBot";
 import { useEffect } from "react";
 import Contact from "./pages/Contact";
+import Chatbot from "./pages/Chatbot";
 
 const App = () => {
   const { isLoggedIn } = useLogin();
@@ -51,7 +52,7 @@ const App = () => {
       {!isDashboard && !isBloodBank && <Navbar />}
       <Routes>
         <Route path="/login" element={<Login />} />
-        <Route path="/chat" element={<ChatBot />} />
+        <Route path="/chat" element={<Chatbot />} />
         <Route path="/" element={<Home />} />
         <Route path="/ambulance" element={<Ambulance></Ambulance>} />
         <Route path="/make-an-appointment" element={<MakeAnAppointment />} />
